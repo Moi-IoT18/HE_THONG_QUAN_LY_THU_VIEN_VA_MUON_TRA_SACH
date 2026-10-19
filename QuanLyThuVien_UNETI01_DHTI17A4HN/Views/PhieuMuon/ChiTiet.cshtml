@@ -1,0 +1,15 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Chi tiết phiếu mượn của bạn đọc + nút hủy khi đang Chờ duyệt. *@
+@model PhieuMuon
+@{ ViewData["Title"] = $"Phiếu #{Model.MaPhieuMuon}"; }
+<partial name="_ThongTinPhieu" model="Model" />
+<div class="d-flex gap-2">
+    @if (TrangThaiPhieuService.CoTheChuyen(Model.TrangThai, TrangThaiPhieu.DaHuy))
+    {
+        <form asp-action="Huy" asp-route-id="@Model.MaPhieuMuon" method="post" onsubmit="return confirm('Bạn chắc chắn muốn hủy phiếu này?')">
+            <button class="btn btn-outline-danger"><i class="bi bi-x-circle me-1"></i>Hủy phiếu</button>
+        </form>
+    }
+    <a asp-action="CuaToi" class="btn btn-outline-secondary">Quay lại</a>
+</div>
