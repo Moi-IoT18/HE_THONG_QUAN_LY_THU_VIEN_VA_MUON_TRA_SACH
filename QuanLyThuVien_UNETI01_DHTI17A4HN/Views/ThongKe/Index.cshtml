@@ -1,0 +1,90 @@
+﻿@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Thống kê bằng LINQ (mục 9.4) + biểu đồ Chart.js (nâng cao). *@
+@model ThongKeViewModel
+@{
+    ViewData["Title"] = "Thống kê";
+    var thang = Enumerable.Range(1, 12).Select(i => "T" + i).ToArray();
+}
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Thống kê</h3>
+    <form method="get" class="d-flex gap-2 align-items-center">
+        <label for="nam" class="small text-muted">Năm</label>
+        <select id="nam" name="nam" class="form-select form-select-sm" onchange="this.form.submit()">
+            @foreach (var n in Model.DsNam) { <option value="@n" selected="@(n == Model.Nam)">@n</option> }
+        </select>
+    </form>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body"><div class="stat-value">@Model.SoPhieuDangQuaHan</div><div class="stat-label">Phiếu đang quá hạn</div></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body"><div class="stat-value">@Model.SoPhieuTraTre</div><div class="stat-label">Phiếu đã trả nhưng trễ hạn</div></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body"><div class="stat-value">@UiHelper.Tien(Model.TongTienPhat)</div><div class="stat-label">Tổng tiền phạt</div></div></div></div>
+    <div class="col-md-3"><div class="card stat-card"><div class="card-body"><div class="stat-value">@Model.TyLeTraDungHan.ToString("P1")</div><div class="stat-label">Tỷ lệ trả đúng hạn (@Model.SoPhieuTraDungHan/@Model.SoPhieuDaTra phiếu)</div></div></div></div>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-lg-7"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Số lượt mượn theo tháng – năm @Model.Nam</h6>
+        <canvas id="bdThang" height="140"></canvas>
+        <table class="table table-sm mt-2 mb-0 text-center small">
+            <tr>@foreach (var t in thang) { <th>@t</th> }</tr>
+            <tr>@foreach (var v in Model.LuotMuonTheoThang) { <td>@v</td> }</tr>
+        </table>
+    </div></div></div>
+    <div class="col-lg-5"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Số sách theo thể loại</h6>
+        <canvas id="bdTheLoai" height="180"></canvas>
+        <table class="table table-sm mt-2 mb-0">
+            <thead><tr><th>Thể loại</th><th class="text-center">Đầu sách</th><th class="text-center">Số cuốn</th></tr></thead>
+            @foreach (var t in Model.SachTheoTheLoai) { <tr><td>@t.Ten</td><td class="text-center">@t.SoLuong</td><td class="text-center">@t.GiaTri.ToString("N0")</td></tr> }
+        </table>
+    </div></div></div>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Top 5 sách được mượn nhiều nhất</h6>
+        <table class="table table-sm mb-0">
+            <thead><tr><th>#</th><th>Sách</th><th class="text-center">Lượt mượn</th></tr></thead>
+            @{ var i = 0; }
+            @foreach (var s in Model.SachMuonNhieuNhat) { i++; <tr><td>@i</td><td><a asp-controller="Sach" asp-action="Details" asp-route-id="@s.Ma">@s.Ten</a><div class="small text-muted">@s.MoTa</div></td><td class="text-center">@s.SoLuong</td></tr> }
+        </table>
+    </div></div></div>
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Top 5 bạn đọc mượn nhiều nhất</h6>
+        <table class="table table-sm mb-0">
+            <thead><tr><th>#</th><th>Bạn đọc</th><th class="text-center">Số phiếu</th><th class="text-end">Tiền phạt</th></tr></thead>
+            @{ i = 0; }
+            @foreach (var b in Model.BanDocMuonNhieuNhat) { i++; <tr><td>@i</td><td><a asp-controller="BanDoc" asp-action="Details" asp-route-id="@b.Ma">@b.Ten</a></td><td class="text-center">@b.SoLuong</td><td class="text-end">@UiHelper.Tien(b.GiaTri)</td></tr> }
+        </table>
+    </div></div></div>
+</div>
+<div class="row g-3">
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Tiền phạt theo loại vi phạm</h6>
+        <table class="table table-sm mb-0">
+            <thead><tr><th>Loại</th><th class="text-center">Số lượt</th><th class="text-end">Tiền phạt</th></tr></thead>
+            @foreach (var t in Model.TienPhatTheoLoai) { <tr><td>@t.Ten</td><td class="text-center">@t.SoLuong</td><td class="text-end">@UiHelper.Tien(t.GiaTri)</td></tr> }
+            <tfoot><tr><th colspan="2" class="text-end">Tổng</th><th class="text-end">@UiHelper.Tien(Model.TongTienPhat)</th></tr></tfoot>
+        </table>
+    </div></div></div>
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body">
+        <h6 class="text-thuvien">Sách chưa từng được mượn <span class="badge bg-secondary">@Model.SachChuaTungMuon.Count</span></h6>
+        <ul class="mb-0 small">@foreach (var s in Model.SachChuaTungMuon) { <li><a asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach">@s.TenSach</a></li> }</ul>
+    </div></div></div>
+</div>
+@section Scripts {
+<script src="~/lib/chart.js/dist/chart.umd.js"></script>
+<script>
+    if (window.Chart) {
+        new Chart(document.getElementById('bdThang'), {
+            type: 'bar',
+            data: { labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(thang)), datasets: [{ label: 'Lượt mượn', data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LuotMuonTheoThang)), backgroundColor: '#2e7d8c' }] },
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+        });
+        new Chart(document.getElementById('bdTheLoai'), {
+            type: 'doughnut',
+            data: { labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SachTheoTheLoai.Select(x => x.Ten))), datasets: [{ data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SachTheoTheLoai.Select(x => x.SoLuong))) }] },
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+    }
+</script>
+}
