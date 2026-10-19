@@ -1,0 +1,67 @@
+﻿@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Dashboard – các chỉ số tổng quan (mục 9.3). *@
+@model DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+<h3 class="page-title">Dashboard</h3>
+@if (Model.SoPhieuVuaQuetQuaHan > 0)
+{
+    <div class="alert alert-info py-2"><i class="bi bi-info-circle me-1"></i>Hệ thống vừa chuyển @Model.SoPhieuVuaQuetQuaHan phiếu sang trạng thái Quá hạn.</div>
+}
+@{
+    var the = new (string Nhan, string GiaTri, string Icon, string? Link)[]
+    {
+        ("Tổng số thể loại", Model.TongTheLoai.ToString(), "bi-tags", Url.Action("Index", "TheLoai")),
+        ("Tổng số đầu sách", $"{Model.TongDauSach} ({Model.TongSoCuon} cuốn)", "bi-book", Url.Action("QuanLy", "Sach")),
+        ("Đầu sách đang khả dụng", Model.SoSachKhaDung.ToString(), "bi-check2-circle", Url.Action("QuanLy", "Sach", new { conSach = true, trangThai = "ConPhucVu" })),
+        ("Tổng số bạn đọc", Model.TongBanDoc.ToString(), "bi-people", Url.Action("Index", "BanDoc")),
+        ("Tổng số giao dịch", Model.TongGiaoDich.ToString(), "bi-journal-text", Url.Action("Index", "XuLyPhieu")),
+        ("Đang chờ xử lý", Model.SoChoXuLy.ToString(), "bi-hourglass-split", Url.Action("Index", "XuLyPhieu", new { trangThai = "ChoDuyet" })),
+        ("Đang xử lý (đang mượn)", $"{Model.SoDangXuLy} (quá hạn {Model.SoQuaHan})", "bi-arrow-left-right", Url.Action("Index", "QuaHan")),
+        ("Đã hoàn thành (đã trả)", Model.SoHoanThanh.ToString(), "bi-check-all", Url.Action("Index", "XuLyPhieu", new { trangThai = "DaTra" })),
+        ("Tổng tiền phạt đã thu", UiHelper.Tien(Model.TongTienPhat), "bi-cash-coin", Url.Action("Index", "ThongKe")),
+    };
+}
+<div class="row g-3 mb-4">
+@foreach (var t in the)
+{
+    <div class="col-md-6 col-xl-4">
+        <a href="@t.Link" class="text-decoration-none">
+            <div class="card stat-card h-100"><div class="card-body d-flex justify-content-between align-items-center">
+                <div><div class="stat-value">@t.GiaTri</div><div class="stat-label">@t.Nhan</div></div>
+                <i class="bi @t.Icon fs-1 text-thuvien opacity-50"></i>
+            </div></div>
+        </a>
+    </div>
+}
+</div>
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-thuvien">Phiếu chờ duyệt lâu nhất</h6>
+            <table class="table table-sm mb-0">
+                <tbody>
+                @foreach (var p in Model.PhieuChoDuyet)
+                {
+                    <tr><td><a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td><td>@p.BanDoc?.HoTen</td><td>@p.ChiTietMuons.Count cuốn</td><td class="text-muted small">@UiHelper.NgayGio(p.NgayMuon)</td></tr>
+                }
+                @if (!Model.PhieuChoDuyet.Any()) { <tr><td class="text-muted">Không có phiếu chờ duyệt.</td></tr> }
+                </tbody>
+            </table>
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-danger">Phiếu quá hạn lâu nhất</h6>
+            <table class="table table-sm mb-0">
+                <tbody>
+                @foreach (var p in Model.PhieuQuaHanLauNhat)
+                {
+                    <tr><td><a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td><td>@p.BanDoc?.HoTen</td><td>hạn @UiHelper.Ngay(p.HanTra)</td><td><span class="badge bg-danger">@QuaHanService.TinhSoNgayQuaHan(p.HanTra) ngày</span></td></tr>
+                }
+                @if (!Model.PhieuQuaHanLauNhat.Any()) { <tr><td class="text-muted">Không có phiếu quá hạn.</td></tr> }
+                </tbody>
+            </table>
+        </div></div>
+    </div>
+</div>
