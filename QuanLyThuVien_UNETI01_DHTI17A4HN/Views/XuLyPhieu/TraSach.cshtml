@@ -1,0 +1,22 @@
+@model TraSachViewModel
+@{ ViewData["Title"] = $"Tr? phi?u #{Model.MaPhieuMuon}"; var p = Model.Phieu!; }
+<h3 class="page-title">Nh?n tr? sách – #@Model.MaPhieuMuon</h3>
+<form asp-action="TraSach" asp-route-id="@Model.MaPhieuMuon" method="post">
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+    <input type="hidden" asp-for="MaPhieuMuon" />
+    <table class="table" id="bangTra">
+        <thead><tr><th>Sách</th><th>SL</th><th>Ðon giá</th><th>Tình tr?ng</th><th>Ph?t d? ki?n</th></tr></thead>
+        <tbody>
+        @for (var i = 0; i < Model.Dong.Count; i++)
+        {
+            <tr data-sl="@Model.Dong[i].SoLuong" data-gia="@Model.Dong[i].DonGia.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                <td>@Model.Dong[i].TenSach<input type="hidden" asp-for="Dong[i].MaChiTiet" /><input type="hidden" asp-for="Dong[i].SoLuong" /><input type="hidden" asp-for="Dong[i].DonGia" /></td>
+                <td>@Model.Dong[i].SoLuong</td><td>@UiHelper.Tien(Model.Dong[i].DonGia)</td>
+                <td><select asp-for="Dong[i].TinhTrangTra" asp-items="UiHelper.DanhSachEnum<TinhTrangTra>()" class="form-select form-select-sm tinh-trang"></select></td>
+                <td class="text-end tien-phat">0 d</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button class="btn btn-success">Xác nh?n</button>
+</form>

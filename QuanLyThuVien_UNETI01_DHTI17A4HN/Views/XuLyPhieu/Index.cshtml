@@ -1,0 +1,39 @@
+@model XuLyPhieuIndexViewModel
+@{ ViewData["Title"] = "X? lý phi?u mu?n"; var loc = Model.Loc; int Dem(TrangThaiPhieu t) => Model.DemTheoTrangThai.GetValueOrDefault(t); }
+<h3 class="page-title">Ti?p nh?n & x? lý phi?u mu?n</h3>
+<ul class="nav nav-pills mb-3 gap-1">
+    <li class="nav-item"><a class="nav-link @(loc.TrangThai == null ? "active" : "")" asp-action="Index">T?t c? <span class="badge bg-light text-dark">@Model.DemTheoTrangThai.Values.Sum()</span></a></li>
+    @foreach (var t in Enum.GetValues<TrangThaiPhieu>()) { <li class="nav-item"><a class="nav-link @(loc.TrangThai == t ? "active" : "")" asp-action="Index" asp-route-trangThai="@t">@t.TenHienThi() <span class="badge @UiHelper.MauTrangThai(t)">@Dem(t)</span></a></li> }
+</ul>
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <input type="hidden" name="trangThai" value="@loc.TrangThai" />
+    <div class="col-md-3"><label class="form-label small">B?n d?c / mã / SÐT</label><input name="banDoc" value="@loc.BanDoc" class="form-control" /></div>
+    <div class="col-md-3"><label class="form-label small">Tên sách</label><input name="tenSach" value="@loc.TenSach" class="form-control" /></div>
+    <div class="col-md-2"><label class="form-label small">Th? lo?i</label><select name="maTheLoai" class="form-select" asp-items="Model.DsTheLoai"><option value="">-- T?t c? --</option></select></div>
+    <div class="col-md-2"><label class="form-label small">T? ngày</label><input name="tuNgay" type="date" value="@loc.TuNgay?.ToString("yyyy-MM-dd")" class="form-control" /></div>
+    <div class="col-md-2"><label class="form-label small">Ð?n ngày</label><input name="denNgay" type="date" value="@loc.DenNgay?.ToString("yyyy-MM-dd")" class="form-control" /></div>
+    <div class="col-md-3"><label class="form-label small">S?p x?p</label><select name="sapXep" class="form-select"><option value="ngay_desc">M?i nh?t</option><option value="ngay_asc">Cu nh?t</option></select></div>
+    <div class="col-md-2 d-flex gap-1"><button class="btn btn-thuvien flex-fill">L?c</button><a asp-action="Index" class="btn btn-outline-secondary">Xóa</a></div>
+</form>
+<div class="card"><div class="card-body p-0"><table class="table table-hover mb-0">
+    <thead><tr><th>Phi?u</th><th>B?n d?c</th><th>Sách</th><th>Ngày t?o</th><th>H?n tr?</th><th>Tr?ng thái</th><th class="text-end">Ti?n ph?t</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.DanhSach.Items)
+    {
+        var soNgay = TrangThaiPhieuService.DangXuLy(p.TrangThai) ? QuaHanService.TinhSoNgayQuaHan(p.HanTra) : 0;
+        <tr>
+            <td><a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td>
+            <td>@p.BanDoc?.HoTen</td><td>@string.Join(", ", p.ChiTietMuons.Select(c => c.Sach?.TenSach))</td>
+            <td>@UiHelper.NgayGio(p.NgayMuon)</td><td>@UiHelper.Ngay(p.HanTra) @if (soNgay > 0) { <span class="badge bg-danger">+@soNgay</span> }</td>
+            <td><span class="badge @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></td>
+            <td class="text-end">@UiHelper.Tien(p.TienPhat)</td>
+            <td class="text-end text-nowrap">
+                @if (p.TrangThai == TrangThaiPhieu.ChoDuyet) { <a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-warning">Duy?t</a> }
+                else if (TrangThaiPhieuService.DangXuLy(p.TrangThai)) { <a asp-action="TraSach" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-success">Tr?</a> }
+                else { <a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-outline-secondary">Xem</a> }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table></div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
