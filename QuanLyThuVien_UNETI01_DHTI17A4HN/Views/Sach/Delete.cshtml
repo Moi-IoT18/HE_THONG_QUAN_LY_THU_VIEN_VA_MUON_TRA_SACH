@@ -1,0 +1,20 @@
+﻿@
+@model Sach
+@{ ViewData["Title"] = "Xóa sách"; bool coLichSu = ViewBag.CoLichSu; }
+<h3 class="page-title">Xóa sách</h3>
+<div class="card"><div class="card-body">
+    <p><strong>@Model.TenSach</strong> – @Model.TacGia (@Model.TheLoai?.TenTheLoai, @Model.NhaXuatBan?.TenNhaXuatBan, @Model.NamXuatBan)</p>
+    @if (coLichSu)
+    {
+        <div class="alert alert-warning">Sách đã phát sinh lịch sử mượn. Để giữ toàn vẹn dữ liệu, hệ thống sẽ <strong>chuyển sang "Ngừng phục vụ"</strong> thay vì xóa.</div>
+    }
+    else
+    {
+        <div class="alert alert-danger">Sách chưa có lượt mượn nào và sẽ bị xóa vĩnh viễn.</div>
+    }
+    <form asp-action="Delete" asp-route-id="@Model.MaSach" method="post">
+        <button class="btn btn-danger"><i class="bi bi-trash me-1"></i>@(coLichSu ? "Ngừng phục vụ" : "Xóa")</button>
+        <a asp-action="QuanLy" class="btn btn-outline-secondary">Hủy</a>
+    </form>
+</div></div>
+
