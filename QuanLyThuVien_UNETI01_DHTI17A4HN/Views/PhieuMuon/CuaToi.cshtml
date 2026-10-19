@@ -1,0 +1,51 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Theo dõi phiếu mượn của tôi + cảnh báo sắp đến hạn / quá hạn. *@
+@model PhieuCuaToiViewModel
+@{ ViewData["Title"] = "Phiếu mượn của tôi"; }
+<h3 class="page-title">Phiếu mượn của tôi</h3>
+@foreach (var p in Model.CanhBaoHan)
+{
+    var soNgay = QuaHanService.TinhSoNgayQuaHan(p.HanTra);
+    if (soNgay > 0)
+    {
+        <div class="alert alert-danger py-2"><i class="bi bi-alarm me-1"></i>Phiếu <a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a> đã <strong>quá hạn @soNgay ngày</strong> (hạn @UiHelper.Ngay(p.HanTra)). Tiền phạt tạm tính @UiHelper.Tien(soNgay * QuyDinh.PhatQuaHanMoiNgay) mỗi cuốn – vui lòng trả sách sớm.</div>
+    }
+    else
+    {
+        <div class="alert alert-warning py-2"><i class="bi bi-clock me-1"></i>Phiếu <a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a> sắp đến hạn trả (@UiHelper.Ngay(p.HanTra)).</div>
+    }
+}
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <div class="col-md-4">
+        <label class="form-label small">Trạng thái</label>
+        <select name="trangThai" class="form-select" asp-items="UiHelper.DanhSachEnum(Model.TrangThai)" onchange="this.form.submit()">
+            <option value="">-- Tất cả --</option>
+        </select>
+    </div>
+</form>
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Mã phiếu</th><th>Sách</th><th>Ngày tạo</th><th>Hạn trả</th><th>Ngày trả</th><th>Trạng thái</th><th class="text-end">Tiền phạt</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.DanhSach.Items)
+    {
+        <tr>
+            <td>#@p.MaPhieuMuon</td>
+            <td class="small">@string.Join(", ", p.ChiTietMuons.Select(ct => ct.Sach?.TenSach))</td>
+            <td>@UiHelper.NgayGio(p.NgayMuon)</td>
+            <td>@UiHelper.Ngay(p.HanTra)</td>
+            <td>@UiHelper.Ngay(p.NgayTra)</td>
+            <td><span class="badge @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></td>
+            <td class="text-end">@UiHelper.Tien(p.TienPhat)</td>
+            <td class="text-end"><a asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="8" class="text-center text-muted py-4">Bạn chưa có phiếu mượn nào. <a asp-controller="Sach" asp-action="Index">Tra cứu sách</a></td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
