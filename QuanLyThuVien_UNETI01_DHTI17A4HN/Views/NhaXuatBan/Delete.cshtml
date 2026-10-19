@@ -1,0 +1,20 @@
+﻿@
+@model NhaXuatBan
+@{ ViewData["Title"] = "Xóa nhà xuất bản"; int soSach = ViewBag.SoSach; }
+<h3 class="page-title">Xóa nhà xuất bản</h3>
+<div class="card"><div class="card-body">
+    <p><strong>@Model.TenNhaXuatBan</strong></p>
+    @if (soSach > 0)
+    {
+        <div class="alert alert-warning">Đang có <strong>@soSach</strong> đầu sách thuộc nhà xuất bản này nên không thể xóa.</div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+    }
+    else
+    {
+        <div class="alert alert-danger">Bạn chắc chắn muốn xóa?</div>
+        <form asp-action="Delete" asp-route-id="@Model.MaNhaXuatBan" method="post">
+            <button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Xóa</button> <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+        </form>
+    }
+</div></div>
+

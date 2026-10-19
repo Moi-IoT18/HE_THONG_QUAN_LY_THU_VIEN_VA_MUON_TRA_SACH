@@ -1,0 +1,12 @@
+﻿@
+@model NhaXuatBan
+<div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+<input type="hidden" asp-for="MaNhaXuatBan" />
+<div class="row g-3">
+    <div class="col-md-6"><label asp-for="TenNhaXuatBan" class="form-label"></label><input asp-for="TenNhaXuatBan" class="form-control" /><span asp-validation-for="TenNhaXuatBan"></span></div>
+    <div class="col-md-6"><label asp-for="DiaChi" class="form-label"></label><input asp-for="DiaChi" class="form-control" /><span asp-validation-for="DiaChi"></span></div>
+    <div class="col-md-6"><label asp-for="SoDienThoai" class="form-label"></label><input asp-for="SoDienThoai" class="form-control" /><span asp-validation-for="SoDienThoai"></span></div>
+    <div class="col-md-6"><label asp-for="Email" class="form-label"></label><input asp-for="Email" class="form-control" type="email" /><span asp-validation-for="Email"></span></div>
+    <div class="col-12"><div class="form-check form-switch"><input asp-for="TrangThai" class="form-check-input" /><label asp-for="TrangThai" class="form-check-label"></label></div></div>
+</div>
+
