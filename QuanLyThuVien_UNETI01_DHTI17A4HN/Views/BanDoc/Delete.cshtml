@@ -1,0 +1,21 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Xác nhận xóa bạn đọc (chỉ khi chưa có lịch sử mượn). *@
+@model BanDoc
+@{ ViewData["Title"] = "Xóa bạn đọc"; int soPhieu = ViewBag.SoPhieu; }
+<h3 class="page-title">Xóa bạn đọc</h3>
+<div class="card"><div class="card-body">
+    <p><strong>@Model.HoTen</strong> – tài khoản <code>@Model.TaiKhoan?.TenDangNhap</code></p>
+    @if (soPhieu > 0)
+    {
+        <div class="alert alert-warning">Bạn đọc đã có <strong>@soPhieu</strong> phiếu mượn nên không thể xóa. Hãy tạm khóa thẻ.</div>
+        <a asp-action="Details" asp-route-id="@Model.MaBanDoc" class="btn btn-outline-secondary">Quay lại</a>
+    }
+    else
+    {
+        <div class="alert alert-danger">Xóa bạn đọc sẽ xóa luôn tài khoản đăng nhập. Bạn chắc chắn?</div>
+        <form asp-action="Delete" asp-route-id="@Model.MaBanDoc" method="post">
+            <button class="btn btn-danger"><i class="bi bi-trash me-1"></i>Xóa</button> <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+        </form>
+    }
+</div></div>

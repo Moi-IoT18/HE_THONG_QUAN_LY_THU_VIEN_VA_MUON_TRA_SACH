@@ -1,0 +1,56 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Chi tiết bạn đọc + lịch sử phiếu mượn, khóa thẻ, gia hạn thẻ. *@
+@model BanDocChiTietViewModel
+@{ var b = Model.BanDoc; ViewData["Title"] = b.HoTen; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">@b.HoTen <small class="text-muted fs-6">(mã @b.MaBanDoc)</small></h3>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@b.MaBanDoc" class="btn btn-primary"><i class="bi bi-pencil me-1"></i>Sửa</a>
+        <form asp-action="GiaHanThe" asp-route-id="@b.MaBanDoc" method="post"><button class="btn btn-outline-success"><i class="bi bi-calendar-plus me-1"></i>Gia hạn thẻ 1 năm</button></form>
+        <form asp-action="KhoaMo" asp-route-id="@b.MaBanDoc" method="post"><button class="btn btn-outline-warning"><i class="bi bi-lock me-1"></i>@(b.TrangThai == TrangThaiBanDoc.HoatDong ? "Tạm khóa thẻ" : "Mở khóa thẻ")</button></form>
+    </div>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-lg-8"><div class="card h-100"><div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Tài khoản</dt><dd class="col-sm-8">@b.TaiKhoan?.TenDangNhap @if (b.TaiKhoan is { TrangThai: false }) { <span class="badge bg-secondary">bị khóa</span> }</dd>
+            <dt class="col-sm-4">Ngày sinh</dt><dd class="col-sm-8">@UiHelper.Ngay(b.NgaySinh)</dd>
+            <dt class="col-sm-4">Giới tính</dt><dd class="col-sm-8">@(b.GioiTinh?.TenHienThi() ?? "—")</dd>
+            <dt class="col-sm-4">Điện thoại</dt><dd class="col-sm-8">@(b.SoDienThoai ?? "—")</dd>
+            <dt class="col-sm-4">Email</dt><dd class="col-sm-8">@(b.Email ?? "—")</dd>
+            <dt class="col-sm-4">Địa chỉ</dt><dd class="col-sm-8">@(b.DiaChi ?? "—")</dd>
+            <dt class="col-sm-4">Ngày cấp thẻ</dt><dd class="col-sm-8">@UiHelper.Ngay(b.NgayCapThe)</dd>
+            <dt class="col-sm-4">Hạn thẻ</dt><dd class="col-sm-8">@UiHelper.Ngay(b.HanThe) @if (!b.TheConHan) { <span class="badge bg-danger">Hết hạn</span> }</dd>
+            <dt class="col-sm-4">Trạng thái thẻ</dt><dd class="col-sm-8"><span class="badge @UiHelper.MauTrangThai(b.TrangThai)">@b.TrangThai.TenHienThi()</span></dd>
+            <dt class="col-sm-4">Ghi chú</dt><dd class="col-sm-8">@(b.GhiChu ?? "—")</dd>
+        </dl>
+    </div></div></div>
+    <div class="col-lg-4">
+        <div class="card stat-card mb-3"><div class="card-body"><div class="stat-value">@Model.PhieuMuons.Count</div><div class="stat-label">Tổng số phiếu mượn</div></div></div>
+        <div class="card stat-card mb-3"><div class="card-body"><div class="stat-value">@Model.SoSachDangGiu / @QuyDinh.SoSachToiDa</div><div class="stat-label">Cuốn đang giữ / tối đa</div></div></div>
+        <div class="card stat-card"><div class="card-body"><div class="stat-value">@UiHelper.Tien(Model.TongTienPhat)</div><div class="stat-label">Tổng tiền phạt</div></div></div>
+    </div>
+</div>
+<h5>Lịch sử mượn</h5>
+<div class="card"><div class="card-body p-0">
+<table class="table table-sm mb-0">
+    <thead><tr><th>Phiếu</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ngày trả</th><th>Trạng thái</th><th class="text-end">Tiền phạt</th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.PhieuMuons)
+    {
+        <tr>
+            <td><a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td>
+            <td class="small">@string.Join(", ", p.ChiTietMuons.Select(c => c.Sach?.TenSach))</td>
+            <td>@UiHelper.Ngay(p.NgayMuon)</td>
+            <td>@UiHelper.Ngay(p.HanTra)</td>
+            <td>@UiHelper.Ngay(p.NgayTra)</td>
+            <td><span class="badge @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></td>
+            <td class="text-end">@UiHelper.Tien(p.TienPhat)</td>
+        </tr>
+    }
+    @if (!Model.PhieuMuons.Any()) { <tr><td colspan="7" class="text-center text-muted py-3">Chưa có phiếu mượn.</td></tr> }
+    </tbody>
+</table>
+</div></div>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Quay lại danh sách</a>

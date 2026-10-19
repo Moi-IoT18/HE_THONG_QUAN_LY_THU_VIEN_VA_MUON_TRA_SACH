@@ -1,0 +1,57 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Danh sách bạn đọc – tìm kiếm, lọc trạng thái/hạn thẻ, sắp xếp, phân trang. *@
+@model BanDocIndexViewModel
+@{ ViewData["Title"] = "Quản lý bạn đọc"; var homNay = DateTime.Today; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Quản lý bạn đọc</h3>
+    <a asp-action="Create" class="btn btn-thuvien"><i class="bi bi-person-plus me-1"></i>Thêm bạn đọc</a>
+</div>
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <div class="col-md-4"><label class="form-label small">Từ khóa</label><input name="tuKhoa" value="@Model.TuKhoa" class="form-control" placeholder="Họ tên, SĐT, email, tên đăng nhập..." /></div>
+    <div class="col-md-2"><label class="form-label small">Trạng thái thẻ</label>
+        <select name="trangThai" class="form-select" asp-items="UiHelper.DanhSachEnum(Model.TrangThai)"><option value="">-- Tất cả --</option></select></div>
+    <div class="col-md-2"><label class="form-label small">Hạn thẻ</label>
+        <select name="tinhTrangThe" class="form-select">
+            <option value="">-- Tất cả --</option>
+            <option value="conhan" selected="@(Model.TinhTrangThe == "conhan")">Còn hạn</option>
+            <option value="hethan" selected="@(Model.TinhTrangThe == "hethan")">Hết hạn</option>
+        </select></div>
+    <div class="col-md-2"><label class="form-label small">Sắp xếp</label>
+        <select name="sapXep" class="form-select">
+            <option value="ten_asc" selected="@(Model.SapXep == "ten_asc")">Họ tên A → Z</option>
+            <option value="ten_desc" selected="@(Model.SapXep == "ten_desc")">Họ tên Z → A</option>
+            <option value="ngaycap_desc" selected="@(Model.SapXep == "ngaycap_desc")">Cấp thẻ mới nhất</option>
+            <option value="hanthe_asc" selected="@(Model.SapXep == "hanthe_asc")">Hạn thẻ gần nhất</option>
+        </select></div>
+    <div class="col-md-2 d-flex gap-1"><button class="btn btn-thuvien flex-fill"><i class="bi bi-funnel"></i> Lọc</button><a asp-action="Index" class="btn btn-outline-secondary">Xóa</a></div>
+</form>
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Mã</th><th>Họ tên</th><th>Tài khoản</th><th>Điện thoại</th><th>Hạn thẻ</th><th>Trạng thái</th><th class="text-center">Đang giữ</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+    @foreach (var b in Model.DanhSach.Items)
+    {
+        <tr>
+            <td>@b.MaBanDoc</td>
+            <td><a asp-action="Details" asp-route-id="@b.MaBanDoc" class="fw-semibold">@b.HoTen</a><div class="small text-muted">@b.Email</div></td>
+            <td>@b.TenDangNhap @if (!b.TaiKhoanHoatDong) { <span class="badge bg-secondary">TK bị khóa</span> }</td>
+            <td>@b.SoDienThoai</td>
+            <td class="@(b.HanThe < homNay ? "text-danger fw-semibold" : "")">@UiHelper.Ngay(b.HanThe) @if (b.HanThe < homNay) { <span class="badge bg-danger">Hết hạn</span> }</td>
+            <td><span class="badge @UiHelper.MauTrangThai(b.TrangThai)">@b.TrangThai.TenHienThi()</span></td>
+            <td class="text-center">@b.SoSachDangGiu</td>
+            <td class="text-end text-nowrap">
+                <a asp-action="Details" asp-route-id="@b.MaBanDoc" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                <a asp-action="Edit" asp-route-id="@b.MaBanDoc" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                <a asp-action="Delete" asp-route-id="@b.MaBanDoc" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="8" class="text-center text-muted py-4">Không tìm thấy bạn đọc phù hợp.</td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
