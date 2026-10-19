@@ -1,0 +1,58 @@
+﻿@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Chi tiết mượn của 1 phiếu – thêm/sửa/bỏ sách khi phiếu đang Chờ duyệt. *@
+@model ChiTietMuonIndexViewModel
+@{ var p = Model.Phieu; ViewData["Title"] = $"Chi tiết phiếu #{p.MaPhieuMuon}"; var choSua = p.TrangThai == TrangThaiPhieu.ChoDuyet; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Chi tiết mượn – phiếu #@p.MaPhieuMuon <span class="badge fs-6 @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></h3>
+    <a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Về phiếu</a>
+</div>
+<p>Bạn đọc: <strong>@p.BanDoc?.HoTen</strong> · Ngày tạo: @UiHelper.NgayGio(p.NgayMuon)</p>
+@if (Model.CanhBao.Any())
+{
+    <div class="alert alert-warning"><ul class="mb-0">@foreach (var c in Model.CanhBao) { <li>@c</li> }</ul></div>
+}
+<div class="card mb-3"><div class="card-body p-0">
+<table class="table mb-0">
+    <thead><tr><th>Sách</th><th class="text-center">Số lượng</th><th>Tình trạng mượn</th><th>Tình trạng trả</th><th class="text-end">Tiền phạt</th><th>Ghi chú</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+    @foreach (var ct in p.ChiTietMuons)
+    {
+        <tr>
+            <td>@ct.Sach?.TenSach</td>
+            <td class="text-center">@ct.SoLuong</td>
+            <td>@ct.TinhTrangMuon.TenHienThi()</td>
+            <td>@(ct.TinhTrangTra?.TenHienThi() ?? "—")</td>
+            <td class="text-end">@UiHelper.Tien(ct.TienPhat)</td>
+            <td class="small">@ct.GhiChu</td>
+            <td class="text-end text-nowrap">
+                @if (choSua)
+                {
+                    <a asp-action="Edit" asp-route-id="@ct.MaChiTiet" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                    <form asp-action="Delete" asp-route-id="@ct.MaChiTiet" method="post" class="d-inline" onsubmit="return confirm('Bỏ sách này khỏi phiếu?')">
+                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div></div>
+@if (choSua)
+{
+    <div class="card"><div class="card-body">
+        <h6 class="text-thuvien">Thêm sách vào phiếu</h6>
+        <form asp-action="Create" method="post" class="row g-2 align-items-end">
+            <input type="hidden" name="maPhieu" value="@p.MaPhieuMuon" />
+            <div class="col-md-7"><label class="form-label small" for="maSach">Sách khả dụng</label>
+                <select id="maSach" name="maSach" class="form-select" asp-items="Model.DsSachCoTheThem" required><option value="">-- Chọn sách --</option></select></div>
+            <div class="col-md-2"><label class="form-label small" for="soLuong">Số lượng</label><input id="soLuong" name="soLuong" type="number" min="1" value="1" class="form-control" /></div>
+            <div class="col-md-3"><button class="btn btn-thuvien w-100"><i class="bi bi-plus-lg"></i> Thêm</button></div>
+        </form>
+    </div></div>
+}
+else
+{
+    <div class="alert alert-secondary">Phiếu không còn ở trạng thái Chờ duyệt nên chi tiết chỉ được xem, không được sửa.</div>
+}

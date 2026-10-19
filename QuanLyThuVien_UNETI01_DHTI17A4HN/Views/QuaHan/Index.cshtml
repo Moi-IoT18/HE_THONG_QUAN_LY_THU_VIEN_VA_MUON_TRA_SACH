@@ -1,0 +1,42 @@
+﻿@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Danh sách phiếu quá hạn + nút quét quá hạn. *@
+@model QuaHanIndexViewModel
+@{ ViewData["Title"] = "Phiếu quá hạn"; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Phiếu quá hạn</h3>
+    <form asp-action="Quet" method="post"><button class="btn btn-outline-danger"><i class="bi bi-arrow-repeat me-1"></i>Quét quá hạn ngay</button></form>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-md-4"><div class="card stat-card"><div class="card-body"><div class="stat-value text-danger">@Model.TongPhieu</div><div class="stat-label">Phiếu đang quá hạn</div></div></div></div>
+    <div class="col-md-4"><div class="card stat-card"><div class="card-body"><div class="stat-value">@Model.TongCuon</div><div class="stat-label">Cuốn sách chưa trả đúng hạn</div></div></div></div>
+    <div class="col-md-4"><div class="card stat-card"><div class="card-body"><div class="stat-value">@UiHelper.Tien(Model.TongPhatDuKien)</div><div class="stat-label">Tiền phạt dự kiến nếu trả hôm nay</div></div></div></div>
+</div>
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <div class="col-md-6"><label class="form-label small">Bạn đọc</label><input name="tuKhoa" value="@Model.TuKhoa" class="form-control" placeholder="Họ tên hoặc số điện thoại" /></div>
+    <div class="col-md-2"><button class="btn btn-thuvien w-100"><i class="bi bi-search"></i> Tìm</button></div>
+</form>
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Phiếu</th><th>Bạn đọc</th><th>Sách</th><th>Hạn trả</th><th class="text-center">Số ngày quá hạn</th><th class="text-end">Phạt dự kiến</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.DanhSach.Items)
+    {
+        <tr>
+            <td><a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td>
+            <td><a asp-controller="BanDoc" asp-action="Details" asp-route-id="@p.MaBanDoc">@p.HoTen</a><div class="small text-muted">@p.SoDienThoai</div></td>
+            <td class="small">@string.Join(", ", p.TenSachs) <span class="text-muted">(@p.SoCuon cuốn)</span></td>
+            <td>@UiHelper.Ngay(p.HanTra)</td>
+            <td class="text-center"><span class="badge bg-danger">@p.SoNgayQuaHan ngày</span></td>
+            <td class="text-end">@UiHelper.Tien(p.PhatDuKien)</td>
+            <td class="text-end"><a asp-controller="XuLyPhieu" asp-action="TraSach" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-success">Nhận trả</a></td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="7" class="text-center text-muted py-4"><i class="bi bi-emoji-smile me-1"></i>Không có phiếu quá hạn.</td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
