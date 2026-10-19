@@ -90,7 +90,7 @@ public class BanDocService : IBanDocService
  
         var banDoc = new BanDoc
         {
-            TaiKhoan = new TaiKhoan
+            TaiKhoan = new User
             {
                 TenDangNhap = vm.TenDangNhap!.Trim(),
                 MatKhau = MatKhauHelper.BamMatKhau(vm.MatKhau!),

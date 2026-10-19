@@ -1,7 +1,8 @@
-// H? và tên: Tr?nh Th? Thanh Tâm
-// Mã sinh viên: 23103100193
-// N?i dung th?c hi?n: Module 4 – Công th?c tính ti?n ph?t khi tr? sách (QD03, QD04, QD05).
+// H? vï¿½ tï¿½n: Tr?nh Th? Thanh Tï¿½m
+// Mï¿½ sinh viï¿½n: 23103100193
+// N?i dung th?c hi?n: Module 4 ï¿½ Cï¿½ng th?c tï¿½nh ti?n ph?t khi tr? sï¿½ch (QD03, QD04, QD05).
 
+using QuanLyThuVien_UNETI01_DHTI17A4HN.Helpers;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Models;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Models.Enums;
 

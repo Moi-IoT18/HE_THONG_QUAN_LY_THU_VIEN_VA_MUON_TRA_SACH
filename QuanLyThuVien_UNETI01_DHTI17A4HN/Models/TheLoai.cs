@@ -16,5 +16,7 @@ public class TheLoai
     [StringLength(255)]
     public string? MoTa { get; set; }
 
+    public int ThuTuHienThi { get; set; }
+
     public ICollection<Sach> Sachs { get; set; } = new List<Sach>();
 }

@@ -53,7 +53,7 @@ public class PhieuMuon
     public BanDoc? BanDoc { get; set; }
 
     [ForeignKey(nameof(NhanVienXuLy))]
-    public TaiKhoan? NhanVien { get; set; }
+    public User? NhanVien { get; set; }
 
     public ICollection<ChiTietMuon> ChiTietMuons { get; set; } = new List<ChiTietMuon>();
 }

@@ -14,6 +14,9 @@ public class AppDbContext : DbContext
     public DbSet<Sach> Sachs { get; set; } = null!;
     public DbSet<TheLoai> TheLoais { get; set; } = null!;
     public DbSet<ChiTietMuon> ChiTietMuons { get; set; } = null!;
+    public DbSet<BanDoc> BanDocs { get; set; } = null!;
+    public DbSet<PhieuMuon> PhieuMuons { get; set; } = null!;
+    public DbSet<User> TaiKhoans => Users;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,6 +27,18 @@ public class AppDbContext : DbContext
             new Role { RoleId = 2, RoleName = "ThuThu", Description = "Nhan vien thu vien" },
             new Role { RoleId = 3, RoleName = "BanDoc", Description = "Doc gia / Sinh vien" }
         );
+
+        modelBuilder.Entity<BanDoc>()
+            .HasOne(b => b.TaiKhoan)
+            .WithOne()
+            .HasForeignKey<BanDoc>(b => b.MaTaiKhoan)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<PhieuMuon>()
+            .HasOne(p => p.NhanVien)
+            .WithMany()
+            .HasForeignKey(p => p.NhanVienXuLy)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 

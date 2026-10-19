@@ -1,7 +1,7 @@
 ﻿@model SachIndexViewModel
 @{
     ViewData["Title"] = "Tra cứu sách";
-    var laBanDoc = Context.Session.LayVaiTro() == VaiTro.BanDoc;
+    var laBanDoc = Context.Session.DaDangNhap() && Context.Session.LayVaiTro() == VaiTro.BanDoc;
     var urlHienTai = Context.Request.Path + Context.Request.QueryString;
 }
 <div class="d-flex justify-content-between align-items-center">
@@ -62,4 +62,3 @@
 </table>
 </div></div>
 <partial name="_PhanTrang" model="Model.DanhSach" />
-

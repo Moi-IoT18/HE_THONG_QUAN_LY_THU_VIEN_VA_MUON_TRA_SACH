@@ -73,7 +73,7 @@ public class BanDoc
  
     // ----- Navigation Property -----
     [ForeignKey(nameof(MaTaiKhoan))]
-    public TaiKhoan? TaiKhoan { get; set; }
+    public User? TaiKhoan { get; set; }
  
     public ICollection<PhieuMuon> PhieuMuons { get; set; } = new List<PhieuMuon>();
  

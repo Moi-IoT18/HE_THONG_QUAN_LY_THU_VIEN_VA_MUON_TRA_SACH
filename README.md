@@ -31,3 +31,5 @@ Du an duoc to chuc theo kien truc 3 lop phan chia ro rang:
    dotnet ef database update --project QuanLyThuVien_UNETI01_DHTI17A4HN
 4. Khoi chay ung dung:
    dotnet run --project QuanLyThuVien_UNETI01_DHTI17A4HN
+5. Chay va tu dong mo Microsoft Edge (PowerShell tai thu muc goc repo):
+   .\run-edge.ps1

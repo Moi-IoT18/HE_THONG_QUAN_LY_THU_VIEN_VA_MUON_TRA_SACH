@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Repositories;
 
 public interface IRepository<T> where T : class
@@ -7,4 +9,5 @@ public interface IRepository<T> where T : class
     void Remove(T entity);
     Task SaveChangesAsync();
     IQueryable<T> Query();
+    IQueryable<T> QueryNoTracking();
 }

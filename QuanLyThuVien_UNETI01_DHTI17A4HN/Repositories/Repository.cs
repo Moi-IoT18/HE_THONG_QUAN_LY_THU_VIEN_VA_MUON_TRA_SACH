@@ -23,4 +23,6 @@ public class Repository<T> : IRepository<T> where T : class
     public Task SaveChangesAsync() => _db.SaveChangesAsync();
 
     public IQueryable<T> Query() => _dbSet.AsQueryable();
+
+    public IQueryable<T> QueryNoTracking() => _dbSet.AsNoTracking();
 }
