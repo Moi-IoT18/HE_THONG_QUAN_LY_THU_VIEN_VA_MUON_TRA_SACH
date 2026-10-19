@@ -1,0 +1,23 @@
+# .NET Core / Visual Studio gitignore
+[Oo]bj/
+[Bb]in/
+.vs/
+*.user
+*.userprefs
+*.suo
+*.cache
+project.lock.json
+project.lock.json.lock
+.nuget/packages/
+.dotnet/
+packages/
+x64/
+x86/
+[Ll]og/
+[Ll]ogs/
+*.log
+nupkgs/
+*.nupkg
+.idea/
+.vscode/
+.DS_Store

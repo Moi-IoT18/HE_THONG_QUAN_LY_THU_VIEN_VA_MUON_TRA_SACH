@@ -1,0 +1,14 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for Visual Studio
+*.cs diff=csharp
+*.csproj text
+*.sln text
+*.slnx text
+*.json text
+*.xml text
+*.md text
+*.html text
+*.css text
+*.js text
