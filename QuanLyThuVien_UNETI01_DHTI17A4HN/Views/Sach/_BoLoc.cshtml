@@ -1,0 +1,58 @@
+﻿@model SachIndexViewModel
+@{ var loc = Model.Loc; var action = ViewContext.RouteData.Values["action"]?.ToString(); }
+<form method="get" asp-action="@action" class="filter-bar">
+    <div class="row g-2">
+        <div class="col-md-5">
+            <label class="form-label small">Từ khóa</label>
+            <div class="input-group">
+                <select name="timTheo" class="form-select" style="max-width:150px" asp-items="@(new SelectList(SachLocViewModel.DsTimTheo, "Value", "Text", loc.TimTheo))"></select>
+                <input name="tuKhoa" value="@loc.TuKhoa" class="form-control" placeholder="Tên sách, tác giả, thể loại, NXB..." />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Thể loại</label>
+            <select name="maTheLoai" class="form-select" asp-items="Model.DsTheLoai">
+                <option value="">-- Tất cả thể loại --</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Năm XB từ</label>
+            <input name="namTu" value="@loc.NamTu" type="number" min="1900" max="2100" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">đến</label>
+            <input name="namDen" value="@loc.NamDen" type="number" min="1900" max="2100" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Trạng thái</label>
+            <select name="trangThai" class="form-select" asp-items="UiHelper.DanhSachEnum(loc.TrangThai)">
+                <option value="">-- Tất cả --</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Tồn kho</label>
+            <select name="conSach" class="form-select">
+                <option value="">-- Tất cả --</option>
+                <option value="true" selected="@(loc.ConSach == true)">Còn sách</option>
+                <option value="false" selected="@(loc.ConSach == false)">Hết sách</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Giá từ (đ)</label>
+            <input name="giaTu" value="@loc.GiaTu" type="number" min="0" step="1000" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Giá đến (đ)</label>
+            <input name="giaDen" value="@loc.GiaDen" type="number" min="0" step="1000" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Sắp xếp</label>
+            <select name="sapXep" class="form-select" asp-items="@(new SelectList(SachLocViewModel.DsSapXep, "Value", "Text", loc.SapXep))"></select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end gap-1">
+            <button type="submit" class="btn btn-thuvien flex-fill"><i class="bi bi-search"></i> Tìm</button>
+            <a asp-action="@action" class="btn btn-outline-secondary" title="Xóa điều kiện"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </div>
+</form>
+

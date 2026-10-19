@@ -1,0 +1,43 @@
+﻿@model SachIndexViewModel
+@{ ViewData["Title"] = "Quản lý sách"; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Quản lý sách</h3>
+    <a asp-action="Create" class="btn btn-thuvien"><i class="bi bi-plus-lg me-1"></i>Thêm sách</a>
+</div>
+<partial name="_BoLoc" model="Model" />
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead>
+        <tr><th>Mã</th><th>Tên sách</th><th>Thể loại</th><th>NXB</th><th class="text-center">Năm</th><th class="text-end">Đơn giá</th><th class="text-center">Còn / Tổng</th><th>Kệ</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var s in Model.DanhSach.Items)
+    {
+        <tr>
+            <td>@s.MaSach</td>
+            <td><a asp-action="Details" asp-route-id="@s.MaSach" class="fw-semibold">@s.TenSach</a><div class="small text-muted">@s.TacGia</div></td>
+            <td>@s.TheLoai?.TenTheLoai</td>
+            <td>@s.NhaXuatBan?.TenNhaXuatBan</td>
+            <td class="text-center">@s.NamXuatBan</td>
+            <td class="text-end">@UiHelper.Tien(s.DonGia)</td>
+            <td class="text-center @(s.SoLuongCon == 0 ? "text-danger fw-bold" : "")">@s.SoLuongCon / @s.SoLuong</td>
+            <td>@s.ViTriKeSach</td>
+            <td><span class="badge @UiHelper.MauTrangThai(s.TrangThai)">@s.TrangThai.TenHienThi()</span></td>
+            <td class="text-end text-nowrap">
+                <a asp-action="Edit" asp-route-id="@s.MaSach" class="btn btn-sm btn-outline-primary" title="Sửa"><i class="bi bi-pencil"></i></a>
+                <form asp-action="DoiTrangThai" asp-route-id="@s.MaSach" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-outline-warning" title="Đổi trạng thái phục vụ"><i class="bi bi-toggle-on"></i></button>
+                </form>
+                <a asp-action="Delete" asp-route-id="@s.MaSach" class="btn btn-sm btn-outline-danger" title="Xóa"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="10" class="text-center text-muted py-4">Không tìm thấy sách phù hợp.</td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
+

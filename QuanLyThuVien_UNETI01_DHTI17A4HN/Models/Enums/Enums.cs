@@ -1,67 +1,61 @@
-// H? v‡ tÍn: Tr?nh Th? Thanh T‚m
-// M„ sinh viÍn: 23103100193
-// N?i dung th?c hi?n: Khai b·o c·c enum tr?ng th·i/vai trÚ d˘ng chung cho to‡n h? th?ng.
-//                     T?t c? du?c luu xu?ng SQL Server d?ng chu?i (HasConversion<string>()).
-
 using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Models.Enums;
 
-/// <summary>Vai trÚ c?a t‡i kho?n.</summary>
 public enum VaiTro
 {
-    [Display(Name = "Qu?n tr? viÍn")] Admin,
-    [Display(Name = "Th? thu")] ThuThu,
-    [Display(Name = "B?n d?c")] BanDoc,
+    [Display(Name = "Qu·∫£n tr·ªã vi√™n")] Admin,
+    [Display(Name = "Th·ªß th∆∞")] ThuThu,
+    [Display(Name = "B·∫°n ƒë·ªçc")] BanDoc,
 }
 
-/// <summary>Tr?ng th·i ph?c v? c?a m?t d?u s·ch.</summary>
+public static class Quyen
+{
+    public const string Admin = "Admin";
+    public const string ThuThu = "ThuThu";
+    public const string BanDoc = "BanDoc";
+    public const string NhanVien = "ThuThu,Admin";
+}
+
 public enum TrangThaiSach
 {
-    [Display(Name = "CÚn ph?c v?")] ConPhucVu,
-    [Display(Name = "Ng?ng ph?c v?")] NgungPhucVu,
+    [Display(Name = "C√≤n ph·ª•c v·ª•")] ConPhucVu = 1,
+    [Display(Name = "H·∫øt s√°ch")] HetSach = 2,
+    [Display(Name = "Ng·ª´ng ph·ª•c v·ª•")] NgungPhucVu = 3,
 }
 
-/// <summary>Tr?ng th·i th? b?n d?c.</summary>
 public enum TrangThaiBanDoc
 {
-    [Display(Name = "Ho?t d?ng")] HoatDong,
-    [Display(Name = "T?m khÛa")] TamKhoa,
+    [Display(Name = "Ho·∫°t ƒë·ªông")] HoatDong,
+    [Display(Name = "T·∫°m kh√≥a")] TamKhoa,
 }
 
 public enum GioiTinh
 {
     [Display(Name = "Nam")] Nam,
-    [Display(Name = "N?")] Nu,
-    [Display(Name = "Kh·c")] Khac,
+    [Display(Name = "N·ªØ")] Nu,
+    [Display(Name = "Kh√°c")] Khac,
 }
 
-/// <summary>
-/// Lu?ng tr?ng th·i phi?u mu?n (m?c 8.4 c?a d?):
-/// ChoDuyet (Ch? x? l˝) ? DangMuon/QuaHan (–ang x? l˝) ? DaTra (Ho‡n th‡nh);
-/// nh·nh DaHuy / TuChoi.
-/// </summary>
 public enum TrangThaiPhieu
 {
-    [Display(Name = "Ch? duy?t")] ChoDuyet,
-    [Display(Name = "–ang mu?n")] DangMuon,
-    [Display(Name = "Qu· h?n")] QuaHan,
-    [Display(Name = "–„ tr?")] DaTra,
-    [Display(Name = "–„ h?y")] DaHuy,
-    [Display(Name = "T? ch?i")] TuChoi,
+    [Display(Name = "Ch·ªù duy·ªát")] ChoDuyet,
+    [Display(Name = "ƒêang m∆∞·ª£n")] DangMuon,
+    [Display(Name = "Qu√° h·∫°n")] QuaHan,
+    [Display(Name = "ƒê√£ tr·∫£")] DaTra,
+    [Display(Name = "ƒê√£ h·ªßy")] DaHuy,
+    [Display(Name = "T·ª´ ch·ªëi")] TuChoi,
 }
 
-/// <summary>TÏnh tr?ng s·ch l˙c giao cho b?n d?c.</summary>
 public enum TinhTrangMuon
 {
-    [Display(Name = "BÏnh thu?ng")] BinhThuong,
-    [Display(Name = "Cu, nh‡u")] CuNhung,
+    [Display(Name = "B√¨nh th∆∞·ªùng")] BinhThuong,
+    [Display(Name = "C≈©, nh√†u")] CuNhung,
 }
 
-/// <summary>TÏnh tr?ng s·ch khi b?n d?c tr?.</summary>
 public enum TinhTrangTra
 {
-    [Display(Name = "BÏnh thu?ng")] BinhThuong,
-    [Display(Name = "Hu h?ng")] HuHong,
-    [Display(Name = "M?t s·ch")] Mat,
+    [Display(Name = "B√¨nh th∆∞·ªùng")] BinhThuong,
+    [Display(Name = "H∆∞ h·ªèng")] HuHong,
+    [Display(Name = "M·∫•t s√°ch")] Mat,
 }

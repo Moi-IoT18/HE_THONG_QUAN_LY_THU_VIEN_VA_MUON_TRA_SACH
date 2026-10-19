@@ -1,0 +1,63 @@
+﻿@model SachFormViewModel
+<div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+<input type="hidden" asp-for="Sach.MaSach" />
+<div class="row g-3">
+    <div class="col-md-8">
+        <label asp-for="Sach.TenSach" class="form-label"></label>
+        <input asp-for="Sach.TenSach" class="form-control" />
+        <span asp-validation-for="Sach.TenSach"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.TacGia" class="form-label"></label>
+        <input asp-for="Sach.TacGia" class="form-control" />
+        <span asp-validation-for="Sach.TacGia"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.MaTheLoai" class="form-label"></label>
+        <select asp-for="Sach.MaTheLoai" asp-items="Model.DsTheLoai" class="form-select">
+            <option value="">-- Chọn thể loại --</option>
+        </select>
+        <span asp-validation-for="Sach.MaTheLoai"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.MaNhaXuatBan" class="form-label"></label>
+        <select asp-for="Sach.MaNhaXuatBan" asp-items="Model.DsNhaXuatBan" class="form-select">
+            <option value="">-- Chọn nhà xuất bản --</option>
+        </select>
+        <span asp-validation-for="Sach.MaNhaXuatBan"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.NamXuatBan" class="form-label"></label>
+        <input asp-for="Sach.NamXuatBan" class="form-control" type="number" min="1900" max="@DateTime.Today.Year" />
+        <span asp-validation-for="Sach.NamXuatBan"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.SoLuong" class="form-label"></label>
+        <input asp-for="Sach.SoLuong" class="form-control" type="number" min="0" />
+        <span asp-validation-for="Sach.SoLuong"></span>
+        @if (Model.Sach.MaSach != 0)
+        {
+            <div class="form-text">Đang cho mượn: @Model.SoDangMuon cuốn · Số lượng còn sẽ được hệ thống tự tính.</div>
+        }
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.DonGia" class="form-label"></label>
+        <input asp-for="Sach.DonGia" class="form-control" type="number" min="0" step="1000" />
+        <span asp-validation-for="Sach.DonGia"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.ViTriKeSach" class="form-label"></label>
+        <input asp-for="Sach.ViTriKeSach" class="form-control" placeholder="VD: VH-01" />
+        <span asp-validation-for="Sach.ViTriKeSach"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Sach.TrangThai" class="form-label"></label>
+        <select asp-for="Sach.TrangThai" asp-items="UiHelper.DanhSachEnum<TrangThaiSach>()" class="form-select"></select>
+    </div>
+    <div class="col-12">
+        <label asp-for="Sach.GhiChu" class="form-label"></label>
+        <textarea asp-for="Sach.GhiChu" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Sach.GhiChu"></span>
+    </div>
+</div>
+

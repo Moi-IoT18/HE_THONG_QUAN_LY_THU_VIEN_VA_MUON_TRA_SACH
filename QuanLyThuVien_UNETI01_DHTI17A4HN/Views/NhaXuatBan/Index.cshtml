@@ -1,0 +1,45 @@
+﻿@model NhaXuatBanIndexViewModel
+@{ ViewData["Title"] = "Nhà xuất bản"; }
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Nhà xuất bản</h3>
+    <a asp-action="Create" class="btn btn-thuvien"><i class="bi bi-plus-lg me-1"></i>Thêm nhà xuất bản</a>
+</div>
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <div class="col-md-6"><label class="form-label small">Từ khóa</label><input name="tuKhoa" value="@Model.TuKhoa" class="form-control" placeholder="Tên hoặc địa chỉ..." /></div>
+    <div class="col-md-3"><label class="form-label small">Trạng thái</label>
+        <select name="trangThai" class="form-select">
+            <option value="">-- Tất cả --</option>
+            <option value="true" selected="@(Model.TrangThai == true)">Đang hợp tác</option>
+            <option value="false" selected="@(Model.TrangThai == false)">Ngừng hợp tác</option>
+        </select></div>
+    <div class="col-md-3 d-flex gap-1"><button class="btn btn-thuvien flex-fill"><i class="bi bi-funnel"></i> Lọc</button><a asp-action="Index" class="btn btn-outline-secondary">Xóa</a></div>
+</form>
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead><tr><th>Tên nhà xuất bản</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th class="text-center">Số đầu sách</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+    @foreach (var n in Model.DanhSach.Items)
+    {
+        <tr>
+            <td><strong>@n.TenNhaXuatBan</strong></td>
+            <td class="small">@n.DiaChi</td>
+            <td>@n.SoDienThoai</td>
+            <td>@n.Email</td>
+            <td class="text-center">@n.SoDauSach</td>
+            <td>@if (n.TrangThai) { <span class="badge bg-success">Đang hợp tác</span> } else { <span class="badge bg-secondary">Ngừng</span> }</td>
+            <td class="text-end text-nowrap">
+                <a asp-action="Details" asp-route-id="@n.MaNhaXuatBan" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                <a asp-action="Edit" asp-route-id="@n.MaNhaXuatBan" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                <a asp-action="Delete" asp-route-id="@n.MaNhaXuatBan" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="7" class="text-center text-muted py-4">Không có nhà xuất bản phù hợp.</td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
+
