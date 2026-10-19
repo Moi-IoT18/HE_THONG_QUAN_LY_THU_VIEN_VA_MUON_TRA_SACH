@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Helpers;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Models;
+using QuanLyThuVien_UNETI01_DHTI17A4HN.Models.Enums;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Services;
  
 namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Controllers;

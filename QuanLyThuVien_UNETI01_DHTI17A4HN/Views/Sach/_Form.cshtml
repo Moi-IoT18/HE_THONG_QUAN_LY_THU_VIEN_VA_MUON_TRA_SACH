@@ -1,5 +1,4 @@
-﻿@
-@model SachFormViewModel
+﻿@model SachFormViewModel
 <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
 <input type="hidden" asp-for="Sach.MaSach" />
 <div class="row g-3">
@@ -48,7 +47,7 @@
     </div>
     <div class="col-md-4">
         <label asp-for="Sach.ViTriKeSach" class="form-label"></label>
-        <input asp-for="Sach.ViTriKey" asp-for="Sach.ViTriKeSach" class="form-control" placeholder="VD: VH-01" />
+        <input asp-for="Sach.ViTriKeSach" class="form-control" placeholder="VD: VH-01" />
         <span asp-validation-for="Sach.ViTriKeSach"></span>
     </div>
     <div class="col-md-4">
