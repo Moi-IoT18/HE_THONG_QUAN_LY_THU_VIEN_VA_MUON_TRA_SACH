@@ -1,0 +1,13 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Thêm bạn đọc. *@
+@model BanDocFormViewModel
+@{ ViewData["Title"] = "Thêm bạn đọc"; }
+<h3 class="page-title">Thêm bạn đọc</h3>
+<div class="card"><div class="card-body">
+    <form asp-action="Create" method="post">
+        <partial name="_Form" model="Model" />
+        <div class="mt-4"><button type="submit" class="btn btn-thuvien"><i class="bi bi-save me-1"></i>Lưu</button> <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a></div>
+    </form>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

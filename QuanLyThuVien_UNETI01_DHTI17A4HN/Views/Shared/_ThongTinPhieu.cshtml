@@ -1,0 +1,58 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Khối thông tin phiếu mượn + bảng chi tiết sách (dùng chung cho bạn đọc và thủ thư). *@
+@model PhieuMuon
+@{
+    var soNgayQuaHan = Model.TrangThai is TrangThaiPhieu.DangMuon or TrangThaiPhieu.QuaHan
+        ? QuaHanService.TinhSoNgayQuaHan(Model.HanTra) : 0;
+}
+<div class="card mb-3"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+        <h4 class="text-thuvien mb-3">Phiếu mượn #@Model.MaPhieuMuon</h4>
+        <span class="badge fs-6 @UiHelper.MauTrangThai(Model.TrangThai)">@Model.TrangThai.TenHienThi()</span>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row mb-0">
+                <dt class="col-5">Bạn đọc</dt><dd class="col-7">@(Model.BanDoc?.HoTen ?? Context.Session.LayHoTen())</dd>
+                <dt class="col-5">Ngày tạo phiếu</dt><dd class="col-7">@UiHelper.NgayGio(Model.NgayMuon)</dd>
+                <dt class="col-5">Hạn trả</dt>
+                <dd class="col-7">
+                    @UiHelper.Ngay(Model.HanTra)
+                    @if (soNgayQuaHan > 0) { <span class="badge bg-danger ms-1">Quá hạn @soNgayQuaHan ngày</span> }
+                </dd>
+                <dt class="col-5">Ngày trả</dt><dd class="col-7">@UiHelper.NgayGio(Model.NgayTra)</dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <dl class="row mb-0">
+                <dt class="col-5">Nhân viên xử lý</dt><dd class="col-7">@(Model.NhanVien?.HoTen ?? "—")</dd>
+                <dt class="col-5">Thời điểm xử lý</dt><dd class="col-7">@UiHelper.NgayGio(Model.NgayXuLy)</dd>
+                <dt class="col-5">Tiền phạt</dt><dd class="col-7 fw-bold @(Model.TienPhat > 0 ? "text-danger" : "")">@UiHelper.Tien(Model.TienPhat)</dd>
+                <dt class="col-5">Ghi chú</dt><dd class="col-7">@(Model.GhiChu ?? "—")</dd>
+            </dl>
+        </div>
+    </div>
+</div></div>
+<div class="card mb-3"><div class="card-body p-0">
+<table class="table mb-0">
+    <thead><tr><th>#</th><th>Sách</th><th class="text-center">SL</th><th>Tình trạng mượn</th><th>Tình trạng trả</th><th class="text-center">Ngày quá hạn</th><th class="text-end">Tiền phạt</th></tr></thead>
+    <tbody>
+    @{ var stt = 0; }
+    @foreach (var ct in Model.ChiTietMuons)
+    {
+        stt++;
+        <tr>
+            <td>@stt</td>
+            <td><a asp-controller="Sach" asp-action="Details" asp-route-id="@ct.MaSach">@ct.Sach?.TenSach</a><div class="small text-muted">@ct.Sach?.TacGia</div></td>
+            <td class="text-center">@ct.SoLuong</td>
+            <td>@ct.TinhTrangMuon.TenHienThi()</td>
+            <td>@if (ct.TinhTrangTra.HasValue) { <span class="badge @UiHelper.MauTinhTrangTra(ct.TinhTrangTra)">@ct.TinhTrangTra.Value.TenHienThi()</span> } else { <span class="text-muted">Chưa trả</span> }</td>
+            <td class="text-center">@ct.SoNgayQuaHan</td>
+            <td class="text-end">@UiHelper.Tien(ct.TienPhat)</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot><tr><th colspan="6" class="text-end">Tổng tiền phạt</th><th class="text-end">@UiHelper.Tien(Model.TienPhat)</th></tr></tfoot>
+</table>
+</div></div>

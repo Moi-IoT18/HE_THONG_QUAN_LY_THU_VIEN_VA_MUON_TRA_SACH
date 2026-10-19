@@ -1,47 +1,94 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    var daDangNhap = Context.Session.DaDangNhap();
+    var laNhanVien = Context.Session.LaNhanVien();
+    var laBanDoc = daDangNhap && Context.Session.LayVaiTro() == VaiTro.BanDoc;
+    var hoTen = Context.Session.LayHoTen();
+}
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuanLyThuVien_UNETI01_DHTI17A4HN</title>
-    <script type="importmap"></script>
+    <meta name="theme-color" content="#102a43" />
+    <title>@ViewData["Title"] | Thư viện UNETI</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuanLyThuVien_UNETI01_DHTI17A4HN.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLyThuVien_UNETI01_DHTI17A4HN</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Sach" asp-action="Index" aria-label="Thư viện UNETI - trang chủ">
+                    <span class="brand-mark" aria-hidden="true">TV</span>
+                    <span class="brand-copy"><strong>THƯ VIỆN UNETI</strong><small>Tra cứu và mượn sách</small></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation" aria-expanded="false" aria-label="Mở menu điều hướng">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="mainNavigation">
+                    <ul class="navbar-nav ms-lg-5 me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Sach" asp-action="Index">Tra cứu sách</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (laBanDoc)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="PhieuMuon" asp-action="CuaToi">Phiếu mượn của tôi</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="PhieuMuon" asp-action="GioMuon">Giỏ mượn</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="BanDoc" asp-action="HoSo">Hồ sơ</a></li>
+                        }
+                        @if (laNhanVien)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Sach" asp-action="QuanLy">Quản lý sách</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="NhaXuatBan" asp-action="Index">Nhà xuất bản</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="BanDoc" asp-action="Index">Bạn đọc</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="XuLyPhieu" asp-action="Index">Xử lý phiếu</a></li>
+                        }
                     </ul>
+                    <div class="navbar-account">
+                        @if (daDangNhap)
+                        {
+                            <span class="account-label">Xin chào, @(string.IsNullOrWhiteSpace(hoTen) ? "bạn" : hoTen)</span>
+                        }
+                        else
+                        {
+                            <span class="account-label">Cổng thông tin thư viện</span>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - QuanLyThuVien_UNETI01_DHTI17A4HN - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main class="container site-main">
+        @if (TempData["ThanhCong"] is string thongBaoThanhCong)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @thongBaoThanhCong
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+        @if (TempData["Loi"] is string thongBaoLoi)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @thongBaoLoi
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div>
+                <strong>Thư viện UNETI</strong>
+                <span>Không gian tri thức dành cho sinh viên và giảng viên.</span>
+            </div>
+            <span class="footer-copy">© @DateTime.Today.Year · Trường Đại học Kinh tế - Kỹ thuật Công nghiệp</span>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

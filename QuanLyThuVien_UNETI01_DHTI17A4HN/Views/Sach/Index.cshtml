@@ -1,0 +1,64 @@
+﻿@model SachIndexViewModel
+@{
+    ViewData["Title"] = "Tra cứu sách";
+    var laBanDoc = Context.Session.DaDangNhap() && Context.Session.LayVaiTro() == VaiTro.BanDoc;
+    var urlHienTai = Context.Request.Path + Context.Request.QueryString;
+}
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="page-title">Tra cứu sách</h3>
+    @if (laBanDoc)
+    {
+        <a asp-controller="PhieuMuon" asp-action="GioMuon" class="btn btn-outline-primary">
+            <i class="bi bi-cart3 me-1"></i>Giỏ mượn <span class="badge bg-primary">@Model.SachTrongGio.Count</span>
+        </a>
+    }
+</div>
+<partial name="_BoLoc" model="Model" />
+<div class="card"><div class="card-body p-0">
+<table class="table table-hover mb-0">
+    <thead>
+        <tr><th>Tên sách</th><th>Tác giả</th><th>Thể loại</th><th>Nhà xuất bản</th><th class="text-center">Năm</th><th class="text-end">Đơn giá</th><th class="text-center">Còn / Tổng</th><th>Tình trạng</th>@if (laBanDoc) {<th></th>}</tr>
+    </thead>
+    <tbody>
+    @foreach (var s in Model.DanhSach.Items)
+    {
+        <tr class="@(s.KhaDung ? "" : "text-muted")">
+            <td><a asp-action="Details" asp-route-id="@s.MaSach" class="fw-semibold">@s.TenSach</a></td>
+            <td>@s.TacGia</td>
+            <td>@s.TheLoai?.TenTheLoai</td>
+            <td>@s.NhaXuatBan?.TenNhaXuatBan</td>
+            <td class="text-center">@s.NamXuatBan</td>
+            <td class="text-end">@UiHelper.Tien(s.DonGia)</td>
+            <td class="text-center">@s.SoLuongCon / @s.SoLuong</td>
+            <td>
+                @if (s.KhaDung) { <span class="badge bg-success">Khả dụng</span> }
+                else if (s.TrangThai == TrangThaiSach.NgungPhucVu) { <span class="badge bg-secondary">Ngừng phục vụ</span> }
+                else { <span class="badge bg-danger">Hết sách</span> }
+            </td>
+            @if (laBanDoc)
+            {
+                <td class="text-end">
+                    @if (Model.SachTrongGio.Contains(s.MaSach))
+                    {
+                        <span class="badge bg-info text-dark"><i class="bi bi-check2"></i> Trong giỏ</span>
+                    }
+                    else if (s.KhaDung)
+                    {
+                        <form asp-controller="PhieuMuon" asp-action="ThemVaoGio" method="post" class="d-inline">
+                            <input type="hidden" name="maSach" value="@s.MaSach" />
+                            <input type="hidden" name="returnUrl" value="@urlHienTai" />
+                            <button class="btn btn-sm btn-thuvien"><i class="bi bi-cart-plus"></i> Mượn</button>
+                        </form>
+                    }
+                </td>
+            }
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="9" class="text-center text-muted py-4"><i class="bi bi-search me-1"></i>Không tìm thấy sách phù hợp với điều kiện.</td></tr>
+    }
+    </tbody>
+</table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />

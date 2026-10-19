@@ -1,0 +1,22 @@
+@model PhieuMuon
+@{ ViewData["Title"] = $"Phi?u #{Model.MaPhieuMuon}"; var canhBao = ViewBag.CanhBao as List<string> ?? new List<string>(); }
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Danh sách phi?u</a>
+    @if (Model.BanDoc is not null) { <a asp-controller="BanDoc" asp-action="Details" asp-route-id="@Model.MaBanDoc" class="btn btn-sm btn-outline-primary"><i class="bi bi-person"></i> H? so b?n d?c</a> }
+</div>
+<partial name="_ThongTinPhieu" model="Model" />
+@if (Model.TrangThai == TrangThaiPhieu.ChoDuyet)
+{
+    @if (canhBao.Any()) { <div class="alert alert-warning"><strong>Phi?u chua d? di?u ki?n:</strong><ul class="mb-0">@foreach (var c in canhBao) { <li>@c</li> }</ul></div> }
+    else { <div class="alert alert-success py-2">B?n d?c và sách d? di?u ki?n.</div> }
+    <div class="card"><div class="card-body d-flex flex-wrap gap-3 align-items-end">
+        <form asp-action="Duyet" asp-route-id="@Model.MaPhieuMuon" method="post"><button class="btn btn-success" @(canhBao.Any() ? "disabled" : "")>Duy?t &amp; giao sách</button></form>
+        <a asp-controller="ChiTietMuon" asp-action="Index" asp-route-maPhieu="@Model.MaPhieuMuon" class="btn btn-outline-primary">Ði?u ch?nh sách</a>
+        <form asp-action="TuChoi" asp-route-id="@Model.MaPhieuMuon" method="post" class="d-flex gap-2 flex-grow-1">
+            <input name="lyDo" class="form-control" placeholder="Lý do t? ch?i" required maxlength="400" />
+            <button class="btn btn-outline-danger text-nowrap">T? ch?i</button>
+        </form>
+    </div></div>
+}
+else if (TrangThaiPhieuService.DangXuLy(Model.TrangThai)) { <a asp-action="TraSach" asp-route-id="@Model.MaPhieuMuon" class="btn btn-success">Nh?n tr? sách</a> }
+else { <div class="alert alert-secondary py-2">Phi?u dã ? tr?ng thái cu?i (@Model.TrangThai.TenHienThi()).</div> }

@@ -1,0 +1,94 @@
+﻿@model SachChiTietViewModel
+@{
+    var s = Model.Sach;
+    ViewData["Title"] = s.TenSach;
+    var laBanDoc = Context.Session.LayVaiTro() == VaiTro.BanDoc;
+    var laNhanVien = Context.Session.LaNhanVien();
+}
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="card"><div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="text-thuvien mb-1">@s.TenSach</h3>
+                    <div class="text-muted">@s.TacGia</div>
+                </div>
+                <div>
+                    @if (s.KhaDung) { <span class="badge bg-success fs-6">Khả dụng</span> }
+                    else if (s.TrangThai == TrangThaiSach.NgungPhucVu) { <span class="badge bg-secondary fs-6">Ngừng phục vụ</span> }
+                    else { <span class="badge bg-danger fs-6">Hết sách</span> }
+                </div>
+            </div>
+            <hr />
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Thể loại</dt><dd class="col-sm-8">@s.TheLoai?.TenTheLoai</dd>
+                <dt class="col-sm-4">Nhà xuất bản</dt><dd class="col-sm-8">@s.NhaXuatBan?.TenNhaXuatBan</dd>
+                <dt class="col-sm-4">Năm xuất bản</dt><dd class="col-sm-8">@s.NamXuatBan</dd>
+                <dt class="col-sm-4">Đơn giá</dt><dd class="col-sm-8">@UiHelper.Tien(s.DonGia)</dd>
+                <dt class="col-sm-4">Số lượng còn / tổng</dt><dd class="col-sm-8">@s.SoLuongCon / @s.SoLuong cuốn</dd>
+                <dt class="col-sm-4">Vị trí kệ</dt><dd class="col-sm-8">@(s.ViTriKeSach ?? "—")</dd>
+                <dt class="col-sm-4">Số lượt mượn</dt><dd class="col-sm-8">@Model.SoLuotMuon</dd>
+                <dt class="col-sm-4">Ghi chú</dt><dd class="col-sm-8">@(s.GhiChu ?? "—")</dd>
+            </dl>
+        </div></div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card"><div class="card-body d-grid gap-2">
+            @if (laBanDoc)
+            {
+                if (Model.TrongGio)
+                {
+                    <a asp-controller="PhieuMuon" asp-action="GioMuon" class="btn btn-outline-primary"><i class="bi bi-cart-check me-1"></i>Đã có trong giỏ – xem giỏ</a>
+                }
+                else if (s.KhaDung)
+                {
+                    <form asp-controller="PhieuMuon" asp-action="ThemVaoGio" method="post" class="d-grid">
+                        <input type="hidden" name="maSach" value="@s.MaSach" />
+                        <button class="btn btn-thuvien"><i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ mượn</button>
+                    </form>
+                }
+                else
+                {
+                    <button class="btn btn-secondary" disabled>Sách hiện không khả dụng</button>
+                }
+            }
+            else if (!Context.Session.DaDangNhap())
+            {
+                <a asp-controller="Auth" asp-action="DangNhap" asp-route-returnUrl="@Context.Request.Path" class="btn btn-thuvien">Đăng nhập để mượn sách</a>
+            }
+            @if (laNhanVien)
+            {
+                <a asp-action="Edit" asp-route-id="@s.MaSach" class="btn btn-primary"><i class="bi bi-pencil me-1"></i>Sửa thông tin</a>
+            }
+            <a asp-action="Index" class="btn btn-outline-secondary">Quay lại danh sách</a>
+        </div></div>
+    </div>
+</div>
+@if (laNhanVien)
+{
+    <h5 class="mt-4">Lịch sử mượn gần đây</h5>
+    <div class="card"><div class="card-body p-0">
+    <table class="table table-sm mb-0">
+        <thead><tr><th>Phiếu</th><th>Bạn đọc</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ngày trả</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+        @foreach (var ct in Model.LichSuMuon)
+        {
+            var p = ct.PhieuMuon!;
+            <tr>
+                <td><a asp-controller="XuLyPhieu" asp-action="ChiTiet" asp-route-id="@p.MaPhieuMuon">#@p.MaPhieuMuon</a></td>
+                <td>@p.BanDoc?.HoTen</td>
+                <td>@UiHelper.Ngay(p.NgayMuon)</td>
+                <td>@UiHelper.Ngay(p.HanTra)</td>
+                <td>@UiHelper.Ngay(p.NgayTra)</td>
+                <td><span class="badge @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></td>
+            </tr>
+        }
+        @if (!Model.LichSuMuon.Any())
+        {
+            <tr><td colspan="6" class="text-center text-muted py-3">Chưa có lượt mượn nào.</td></tr>
+        }
+        </tbody>
+    </table>
+    </div></div>
+}
+

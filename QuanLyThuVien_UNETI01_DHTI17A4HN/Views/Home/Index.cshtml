@@ -1,8 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿@model TrangChuViewModel
+@{ ViewData["Title"] = "Trang chủ"; }
+<div class="p-4 p-md-5 mb-4 rounded-3 text-white bg-thuvien">
+    <h1 class="fw-bold"><i class="bi bi-book-half me-2"></i>Thư viện UNETI</h1>
+    <p class="lead mb-4">Tra cứu @Model.TongDauSach đầu sách thuộc @Model.TongTheLoai thể loại – hiện có @Model.SoSachKhaDung đầu sách sẵn sàng cho mượn.</p>
+    <form asp-controller="Sach" asp-action="Index" method="get" class="row g-2" style="max-width:640px">
+        <div class="col-9"><input name="tuKhoa" class="form-control form-control-lg" placeholder="Nhập tên sách, tác giả, thể loại hoặc NXB..." /></div>
+        <div class="col-3 d-grid"><button class="btn btn-light btn-lg"><i class="bi bi-search"></i> Tìm</button></div>
+    </form>
+</div>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <h5 class="text-thuvien">Sách mới</h5>
+        <div class="row g-3">
+        @foreach (var s in Model.SachMoi)
+        {
+            <div class="col-md-6">
+                <div class="card h-100"><div class="card-body">
+                    <a asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach" class="fw-semibold">@s.TenSach</a>
+                    <div class="small text-muted">@s.TacGia · @s.NamXuatBan</div>
+                    <div class="mt-2 d-flex justify-content-between">
+                        <span class="badge bg-light text-dark border">@s.TheLoai?.TenTheLoai</span>
+                        @if (s.KhaDung) { <span class="badge bg-success">Còn @s.SoLuongCon cuốn</span> } else { <span class="badge bg-danger">Hết sách</span> }
+                    </div>
+                </div></div>
+            </div>
+        }
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <h5 class="text-thuvien">Được mượn nhiều nhất</h5>
+        <ol class="list-group list-group-numbered mb-4">
+        @foreach (var s in Model.SachMuonNhieu)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto"><a asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach">@s.TenSach</a><div class="small text-muted">@s.TacGia</div></div>
+                <span class="badge bg-primary rounded-pill">@s.SoLuotMuon lượt</span>
+            </li>
+        }
+        </ol>
+        <h5 class="text-thuvien">Thể loại</h5>
+        <div class="d-flex flex-wrap gap-2">
+        @foreach (var t in Model.TheLoais)
+        {
+            <a asp-controller="Sach" asp-action="Index" asp-route-maTheLoai="@t.MaTheLoai" class="btn btn-sm btn-outline-secondary">@t.TenTheLoai</a>
+        }
+        </div>
+    </div>
 </div>

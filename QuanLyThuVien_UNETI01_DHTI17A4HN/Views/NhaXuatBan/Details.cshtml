@@ -1,0 +1,25 @@
+﻿@model NhaXuatBan
+@{ ViewData["Title"] = Model.TenNhaXuatBan; }
+<h3 class="page-title">@Model.TenNhaXuatBan</h3>
+<div class="card mb-3"><div class="card-body">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Địa chỉ</dt><dd class="col-sm-9">@(Model.DiaChi ?? "—")</dd>
+        <dt class="col-sm-3">Điện thoại</dt><dd class="col-sm-9">@(Model.SoDienThoai ?? "—")</dd>
+        <dt class="col-sm-3">Email</dt><dd class="col-sm-9">@(Model.Email ?? "—")</dd>
+        <dt class="col-sm-3">Trạng thái</dt><dd class="col-sm-9">@(Model.TrangThai ? "Đang hợp tác" : "Ngừng hợp tác")</dd>
+    </dl>
+</div></div>
+<div class="card"><div class="card-body p-0">
+<table class="table mb-0">
+    <thead><tr><th>Tên sách</th><th>Thể loại</th><th class="text-center">Năm</th><th class="text-center">Còn / Tổng</th></tr></thead>
+    <tbody>
+    @foreach (var s in Model.Sachs)
+    {
+        <tr><td><a asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach">@s.TenSach</a></td><td>@s.TheLoai?.TenTheLoai</td><td class="text-center">@s.NamXuatBan</td><td class="text-center">@s.SoLuongCon / @s.SoLuong</td></tr>
+    }
+    @if (!Model.Sachs.Any()) { <tr><td colspan="4" class="text-center text-muted py-3">Chưa có sách.</td></tr> }
+    </tbody>
+</table>
+</div></div>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Quay lại</a>
+
