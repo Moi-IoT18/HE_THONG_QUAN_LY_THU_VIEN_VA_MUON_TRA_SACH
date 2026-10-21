@@ -1,47 +1,155 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuanLyThuVien_UNETI01_DHTI17A4HN</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Quản Lý Thư Viện UNETI</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QuanLyThuVien_UNETI01_DHTI17A4HN.styles.css" asp-append-version="true" />
+    <style>
+        :root {
+            --sidebar-bg: #132e25;
+            --sidebar-active: #234e42;
+            --main-bg: #f8f9fa;
+        }
+        body {
+            background-color: var(--main-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        /* Layout Sidebar Cố Định */
+        .app-sidebar {
+            width: 260px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .app-sidebar .brand {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: block;
+        }
+        .app-sidebar .nav-link {
+            color: #b0c4be;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: block;
+        }
+        .app-sidebar .nav-link:hover, .app-sidebar .nav-link.active {
+            background-color: var(--sidebar-active);
+            color: #fff;
+        }
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c8a80;
+            margin: 15px 0 5px 15px;
+        }
+        /* Khu vực nội dung bên phải */
+        .app-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-topbar {
+            height: 70px;
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+        .app-main-body {
+            padding: 30px;
+            flex: 1;
+        }
+        .app-footer {
+            background: #fff;
+            border-top: 1px solid #dee2e6;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLyThuVien_UNETI01_DHTI17A4HN</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <!-- SIDEBAR ĐIỀU HƯỚNG BÊN TRÁI -->
+    <div class="app-sidebar shadow">
+        <a href="#" class="brand">
+            📚 Thư viện UNETI<br>
+            <span style="font-size: 0.75rem; color: #8fa8a0; font-weight: normal;">MƯỢN TRẢ SÁCH · NHÓM 01</span>
+        </a>
+
+        <div class="flex-grow-1 overflow-auto">
+            <a class="nav-link active" asp-controller="Home" asp-action="Index">🏠 Trang chủ</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">🔍 Tra cứu sách</a>
+
+            <div class="sidebar-section-title">Quản trị viên</div>
+            <a class="nav-link" asp-controller="TheLoai" asp-action="Index">📂 Quản lý Thể loại</a>
+            <a class="nav-link" asp-controller="TaiKhoan" asp-action="Index">👤 Quản lý Tài khoản</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">📖 Quản lý Sách</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">📦 Xử lý phiếu mượn</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">📊 Thống kê & Báo cáo</a>
+        </div>
+
+        <div class="mt-auto p-2 rounded" style="background-color: rgba(255,255,255,0.05); font-size: 0.8rem; color: #a3c1b8;">
+            <em>"Một cuốn sách hay là một người bạn tốt."</em><br>
+            <strong style="color: #fff;">- Ngạn ngữ</strong>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - QuanLyThuVien_UNETI01_DHTI17A4HN - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- MAIN CONTENT BÊN PHẢI -->
+    <div class="app-content">
+        <!-- TOPBAR -->
+        <div class="app-topbar shadow-sm">
+            <div class="text-muted fw-semibold">
+                📅 Thứ Tư, 21/10/2026
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                @if (Context.Session.GetString("TenDangNhap") != null)
+                {
+                    <div class="text-end">
+                        <div class="fw-bold text-dark">@Context.Session.GetString("HoTen")</div>
+                        <div style="font-size: 0.75rem;" class="text-muted">@Context.Session.GetString("VaiTro")</div>
+                    </div>
+                    <a class="btn btn-outline-danger btn-sm px-3" asp-controller="Auth" asp-action="Logout">Đăng xuất</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-sm px-3" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
+                }
+            </div>
         </div>
-    </footer>
+
+        <!-- BODY CONTENT -->
+        <div class="app-main-body">
+            @RenderBody()
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            &copy; 2026 - Nhóm 01 – ĐHTI17A4HN – Đề tài 14: Hệ thống quản lý thư viện và mượn trả sách | Thực hiện: <strong>Nguyễn Thế Đông - 23103100187</strong>
+        </footer>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
