@@ -347,7 +347,7 @@ namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Migrations
                     b.HasOne("QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TaiKhoan", "NhanVien")
                         .WithMany("PhieuMuonDaXuLy")
                         .HasForeignKey("MaNhanVien")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("BanDoc");

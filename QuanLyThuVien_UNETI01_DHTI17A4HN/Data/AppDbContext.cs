@@ -1,6 +1,6 @@
 // H? và tên: Nguy?n Th? Ðông
 // Mã sinh viên: 23103100187
-// N?i dung th?c hi?n: C?u hình AppDbContext qu?n lý 7 b?ng Entity và Seed Data d? li?u ban d?u cho h? th?ng.
+// N?i dung th?c hi?n: C?u hình AppDbContext qu?n lý 7 b?ng Entity, c?u hình Fluent API (tránh l?i cascade delete) và Seed Data.
 
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien_UNETI01_DHTI17A4HN.Models;
@@ -33,6 +33,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<TaiKhoan>()
             .HasIndex(t => t.Email)
             .IsUnique();
+
+        // C?u hình tránh l?i multiple cascade paths cho PhieuMuon - NhanVien (TaiKhoan)
+        modelBuilder.Entity<PhieuMuon>()
+            .HasOne(p => p.NhanVien)
+            .WithMany(t => t.PhieuMuonDaXuLy)
+            .HasForeignKey(p => p.MaNhanVien)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<TaiKhoan>().HasData(
             new TaiKhoan

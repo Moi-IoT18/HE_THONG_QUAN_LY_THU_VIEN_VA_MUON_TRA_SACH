@@ -12,7 +12,7 @@ using QuanLyThuVien_UNETI01_DHTI17A4HN.Data;
 namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261021090930_InitialCreate")]
+    [Migration("20261021091043_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -350,7 +350,7 @@ namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Migrations
                     b.HasOne("QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TaiKhoan", "NhanVien")
                         .WithMany("PhieuMuonDaXuLy")
                         .HasForeignKey("MaNhanVien")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("BanDoc");

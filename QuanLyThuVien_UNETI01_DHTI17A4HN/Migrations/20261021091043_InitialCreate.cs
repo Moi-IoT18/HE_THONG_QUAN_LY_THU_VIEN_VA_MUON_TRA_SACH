@@ -141,7 +141,7 @@ namespace QuanLyThuVien_UNETI01_DHTI17A4HN.Migrations
                         column: x => x.MaNhanVien,
                         principalTable: "TaiKhoan",
                         principalColumn: "MaTaiKhoan",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
