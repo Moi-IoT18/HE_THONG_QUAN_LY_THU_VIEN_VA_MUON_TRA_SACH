@@ -10,11 +10,11 @@ Hệ thống quản lý toàn bộ quy trình của thư viện: dữ liệu n�
 
 | Mã | Họ tên | MSSV | Module | Nhánh |
 |---|---|---|---|---|
-| SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) |  | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
-| SV2 | Trần Gia Nghĩa  | 03123100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc / sắp xếp / phân trang | `feature/m2-sach` |
-| SV3 | Đặng Thị Phượng |  | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
-| SV4 | Trịnh Thị Thanh Tâm |  | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
-| SV5 | Phan Vũ Thanh Thư |  | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
+| SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) |23103100187  | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
+| SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc / sắp xếp / phân trang | `feature/m2-sach` |
+| SV3 | Đặng Thị Phượng | 23103100182 | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
+| SV4 | Trịnh Thị Thanh Tâm |23103100193  | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
+| SV5 | Phan Vũ Thanh Thư |23103100316  | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
 
 ## Nội dung chi tiết
 
