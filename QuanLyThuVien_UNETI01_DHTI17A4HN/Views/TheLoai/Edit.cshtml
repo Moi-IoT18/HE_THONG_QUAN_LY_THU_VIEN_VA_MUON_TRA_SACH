@@ -1,0 +1,41 @@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TheLoai
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Thể loại";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2>Cập Nhật Thể Loại Sách</h2>
+    <div class="text-muted mb-3 small">Thực hiện bởi: Nguyễn Thế Đông - 23103100187</div>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="MaTheLoai" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenTheLoai" class="form-label fw-semibold"></label>
+            <input asp-for="TenTheLoai" class="form-control" />
+            <span asp-validation-for="TenTheLoai" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MoTa" class="form-label fw-semibold"></label>
+            <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input asp-for="TrangThai" class="form-check-input" />
+            <label asp-for="TrangThai" class="form-check-label fw-semibold">Hoạt động</label>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ThuTuHienThi" class="form-label fw-semibold"></label>
+            <input asp-for="ThuTuHienThi" class="form-control" type="number" />
+            <span asp-validation-for="ThuTuHienThi" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-warning px-4">Cập nhật</button>
+        <a asp-action="Index" class="btn btn-secondary px-4">Quay lại</a>
+    </form>
+</div>
