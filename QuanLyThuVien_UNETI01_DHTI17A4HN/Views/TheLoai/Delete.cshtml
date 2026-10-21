@@ -1,0 +1,33 @@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TheLoai
+
+@{
+    ViewData["Title"] = "Xóa Thể loại";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2 class="text-danger">Xóa Thể Loại Sách</h2>
+    <div class="text-muted mb-3 small">Thực hiện bởi: Nguyễn Thế Đông - 23103100187</div>
+
+    <div class="alert alert-warning">
+        Bạn có chắc chắn muốn xóa thể loại này không?
+    </div>
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Tên thể loại:</dt>
+            <dd class="col-sm-9 fw-bold">@Model.TenTheLoai</dd>
+
+            <dt class="col-sm-3">Mô tả:</dt>
+            <dd class="col-sm-9">@Model.MoTa</dd>
+
+            <dt class="col-sm-3">Trạng thái:</dt>
+            <dd class="col-sm-9">@(Model.TrangThai ? "Hoạt động" : "Khóa")</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaTheLoai" />
+            <button type="submit" class="btn btn-danger px-4">Xác nhận Xóa</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Hủy bỏ</a>
+        </form>
+    </div>
+</div>

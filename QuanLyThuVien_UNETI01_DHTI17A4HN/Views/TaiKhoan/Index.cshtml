@@ -1,0 +1,47 @@
+@model IEnumerable<QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TaiKhoan>
+
+@{
+    ViewData["Title"] = "Quản lý Tài khoản";
+}
+
+<div class="container mt-4">
+    <h2>Quản Lý Tài Khoản Hệ Thống</h2>
+    <div class="text-muted mb-3 small">Thực hiện bởi: Nguyễn Thế Đông - 23103100187</div>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã TK</th>
+                <th>Tên đăng nhập</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th class="text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>@item.MaTaiKhoan</td>
+                    <td class="fw-bold">@item.TenDangNhap</td>
+                    <td>@item.HoTen</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <span class="badge bg-info text-dark">@item.VaiTro</span>
+                    </td>
+                    <td>
+                        @if(item.TrangThai) {
+                            <span class="badge bg-success">Hoạt động</span>
+                        } else {
+                            <span class="badge bg-secondary">Đã khóa</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.MaTaiKhoan" class="btn btn-warning btn-sm">Sửa / Phân quyền</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,8 +1,42 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ hệ thống";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid px-0">
+    <!-- BANNER CHÀO MỪNG -->
+    <div class="p-5 mb-4 rounded-3 text-white shadow-sm" style="background-color: #132e25;">
+        <div class="container-fluid py-3">
+            <span class="badge bg-success mb-2">Thư viện UNETI · Nhóm 01</span>
+            <h1 class="display-5 fw-bold">Hôm nay bạn muốn đọc gì?</h1>
+            <p class="col-md-8 fs-6 text-light opacity-75">
+                Tìm theo tên sách, tác giả, thể loại hoặc nhà xuất bản – đăng ký mượn trực tuyến, nhận sách tại quầy.
+            </p>
+            <hr class="my-4 border-light opacity-25">
+            <div class="text-light small">
+                Thực hiện bởi: <strong>Nguyễn Thế Đông - MSV: 23103100187</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- THỐNG KÊ NHANH -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small">Tổng số Đầu sách</div>
+                <div class="fs-3 fw-bold text-success">20</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small">Thể loại sách</div>
+                <div class="fs-3 fw-bold text-primary">5</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3">
+                <div class="text-muted small">Sẵn sàng cho mượn</div>
+                <div class="fs-3 fw-bold text-warning">16</div>
+            </div>
+        </div>
+    </div>
 </div>

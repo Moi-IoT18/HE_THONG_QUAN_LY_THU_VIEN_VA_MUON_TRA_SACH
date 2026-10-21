@@ -1,0 +1,47 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Thanh phân trang dùng chung – giữ nguyên TẤT CẢ điều kiện tìm kiếm/lọc/sắp xếp
+                       đang có trên URL, chỉ thay tham số "trang". *@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Helpers.IPhanTrangInfo
+@{
+    string TaoUrl(int trang)
+    {
+        var thamSo = Context.Request.Query
+            .Where(q => q.Key != "trang")
+            .Select(q => new KeyValuePair<string, string?>(q.Key, q.Value.ToString()))
+            .Append(new KeyValuePair<string, string?>("trang", trang.ToString()));
+        return Context.Request.Path + QueryString.Create(thamSo);
+    }
+    var tu = Math.Max(1, Model.TrangHienTai - 2);
+    var den = Math.Min(Model.TongSoTrang, Model.TrangHienTai + 2);
+}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+    <span class="text-muted small">
+        Hiển thị @Model.TuDong–@Model.DenDong trên tổng @Model.TongSoDong dòng · Trang @Model.TrangHienTai/@Math.Max(1, Model.TongSoTrang)
+    </span>
+    @if (Model.TongSoTrang > 1)
+    {
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(Model.CoTrangTruoc ? "" : "disabled")">
+                    <a class="page-link" href="@TaoUrl(1)" title="Trang đầu">&laquo;</a>
+                </li>
+                <li class="page-item @(Model.CoTrangTruoc ? "" : "disabled")">
+                    <a class="page-link" href="@TaoUrl(Model.TrangHienTai - 1)">Trước</a>
+                </li>
+                @for (var i = tu; i <= den; i++)
+                {
+                    <li class="page-item @(i == Model.TrangHienTai ? "active" : "")">
+                        <a class="page-link" href="@TaoUrl(i)">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.CoTrangSau ? "" : "disabled")">
+                    <a class="page-link" href="@TaoUrl(Model.TrangHienTai + 1)">Sau</a>
+                </li>
+                <li class="page-item @(Model.CoTrangSau ? "" : "disabled")">
+                    <a class="page-link" href="@TaoUrl(Model.TongSoTrang)" title="Trang cuối">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
