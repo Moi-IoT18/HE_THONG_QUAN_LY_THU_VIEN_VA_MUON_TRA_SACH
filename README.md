@@ -10,11 +10,19 @@ Hệ thống quản lý toàn bộ quy trình của thư viện: dữ liệu n�
 
 | Mã | Họ tên | MSSV | Module | Nhánh |
 |---|---|---|---|---|
+<<<<<<< HEAD
 | SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) | 23103100187 | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
 | SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc , sắp xếp , phân trang | `feature/m2-sach` |
 | SV3 | Đặng Thị Phượng | 23103100182 | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
 | SV4 | Trịnh Thị Thanh Tâm | 23103100193 | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
 | SV5 | Phan Vũ Thanh Thư | 23103100316 | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
+=======
+| SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) |23103100187  | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
+| SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc / sắp xếp / phân trang | `feature/m2-sach` |
+| SV3 | Đặng Thị Phượng | 23103100182 | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
+| SV4 | Trịnh Thị Thanh Tâm |23103100193  | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
+| SV5 | Phan Vũ Thanh Thư |23103100316  | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
+>>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
 
 ## Nội dung chi tiết
 
@@ -119,7 +127,12 @@ Một chức năng đủ bộ = 5 file `.cs` + các View, ví dụ Nhà xuất b
 <details>
 <summary><b>3. Sơ đồ ERD</b></summary>
 
+<<<<<<< HEAD
  Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io) 
+=======
+GitHub tự vẽ sơ đồ bên dưới. Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io) để xem bản đẹp.
+
+>>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
 ```mermaid
 erDiagram
     TheLoai     ||--o{ Sach        : "phân loại"
@@ -746,7 +759,11 @@ Mẫu bắt buộc: **`[MSSV] [Module] Noi dung`** – tiếng Việt **không d
 | [docs/USECASE.md](./docs/USECASE.md) | Use Case tổng quát + 5 module |
 | [docs/ERD.md](./docs/ERD.md) | ERD 7 bảng + sơ đồ trạng thái phiếu mượn |
 | [docs/THIETKE_CSDL.md](./docs/THIETKE_CSDL.md) | Chi tiết bảng, ràng buộc, quy định nghiệp vụ |
+<<<<<<< HEAD
 | [docs/QuanLyThuVien_UNETI01_full.sql](./docs/QuanLyThuVien_UNETI01_full.sql) | Database hoàn chỉnh + dữ liệu mẫu |
+=======
+| [docs/QuanLyThuVien_UNETI01_full.sql](./docs/QuanLyThuVien_UNETI01.sql) | Database hoàn chỉnh + dữ liệu mẫu |
+>>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
 | [docs/database.sql](./docs/database.sql) · [docs/schema.dbml](./docs/schema.dbml) | Script tham chiếu · ERD cho dbdiagram.io |
 | [docs/GIAODIEN.md](./docs/GIAODIEN.md) | Ảnh chụp giao diện |
 
