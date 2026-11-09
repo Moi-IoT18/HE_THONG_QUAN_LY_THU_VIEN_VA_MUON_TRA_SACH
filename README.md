@@ -119,7 +119,7 @@ Một chức năng đủ bộ = 5 file `.cs` + các View, ví dụ Nhà xuất b
 <details>
 <summary><b>3. Sơ đồ ERD</b></summary>
 
-GitHub tự vẽ sơ đồ bên dưới. Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io) để xem bản đẹp.
+GitHub tự vẽ sơ đồ bên dưới. Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io).
 
 ```mermaid
 erDiagram
