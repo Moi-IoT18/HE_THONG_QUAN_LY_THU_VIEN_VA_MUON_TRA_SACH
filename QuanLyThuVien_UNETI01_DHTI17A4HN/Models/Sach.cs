@@ -61,6 +61,10 @@ public class Sach
     [DataType(DataType.MultilineText)]
     [Display(Name = "Ghi chú")]
     public string? GhiChu { get; set; }
+
+    [StringLength(300)]
+    [Display(Name = "Đường dẫn ảnh bìa")]
+    public string? DuongDanAnhBia { get; set; }
  
     // ----- Navigation Property -----
     [ForeignKey(nameof(MaTheLoai))]
