@@ -1,0 +1,31 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Xác nhận xóa nhà xuất bản, cảnh báo tham chiếu sách (Module 2). *@
+@model NhaXuatBan
+@{
+    ViewData["Title"] = "Xóa nhà xuất bản";
+}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2 class="text-danger">Xóa nhà xuất bản</h2>
+    @if (TempData["Loi"] is string error) { <div class="alert alert-danger">@error</div> }
+    @if (ViewBag.InUse is true)
+    {
+        <div class="alert alert-warning">Nhà xuất bản đang được sách tham chiếu, không thể xóa.</div>
+    }
+    else
+    {
+        <div class="alert alert-warning">Bạn có chắc muốn xóa nhà xuất bản này?</div>
+    }
+    <p><strong>@Model.TenNhaXuatBan</strong></p>
+    @if (ViewBag.InUse is not true)
+    {
+        <form asp-action="Delete" asp-route-id="@Model.MaNhaXuatBan" method="post">
+            <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </form>
+    }
+    else
+    {
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    }
+</div>

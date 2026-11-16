@@ -1,0 +1,56 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Hiển thị chi tiết và khả năng phục vụ của sách (Module 2). *@
+@model Sach
+@{
+    ViewData["Title"] = "Chi tiết sách";
+}
+<div class="container mt-4 book-details-page">
+    @if (TempData["ThanhCong"] is string success) { <div class="alert alert-success">@success</div> }
+    @if (TempData["Loi"] is string error) { <div class="alert alert-danger">@error</div> }
+    <section class="book-details-card">
+        <div class="book-details-cover">
+            <partial name="_BookCover" model="Model.TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-large", ["CoverUrl"] = Model.DuongDanAnhBia }' />
+        </div>
+        <div class="book-details-content">
+            <span class="book-details-kicker">HỒ SƠ TÁC PHẨM</span>
+            <h2>Chi tiết sách</h2>
+            <h3>@Model.TenSach</h3>
+            <p class="book-details-author">@(Model.TacGia ?? "Chưa cập nhật tác giả")</p>
+    <dl class="row mt-3">
+        <dt class="col-sm-4">Mã sách</dt><dd class="col-sm-8">@Model.MaSach</dd>
+        <dt class="col-sm-4">Thể loại</dt><dd class="col-sm-8">@Model.TheLoai?.TenTheLoai</dd>
+        <dt class="col-sm-4">Nhà xuất bản</dt><dd class="col-sm-8">@Model.NhaXuatBan?.TenNhaXuatBan</dd>
+        <dt class="col-sm-4">Năm xuất bản</dt><dd class="col-sm-8">@Model.NamXuatBan</dd>
+        <dt class="col-sm-4">Số lượng còn / tổng</dt><dd class="col-sm-8">@Model.SoLuongCon / @Model.SoLuong</dd>
+        <dt class="col-sm-4">Đơn giá</dt><dd class="col-sm-8">@Model.DonGia.ToString("N0") đ</dd>
+        <dt class="col-sm-4">Vị trí kệ</dt><dd class="col-sm-8">@(Model.ViTriKeSach ?? "—")</dd>
+        <dt class="col-sm-4">Trạng thái</dt><dd class="col-sm-8">@Html.DisplayFor(model => model.TrangThai)</dd>
+        <dt class="col-sm-4">Khả dụng</dt>
+        <dd class="col-sm-8">
+            @if (Model.KhaDung) { <span class="badge bg-success">Còn khả dụng</span> }
+            else { <span class="badge bg-secondary">Không khả dụng</span> }
+        </dd>
+        <dt class="col-sm-4">Ghi chú</dt><dd class="col-sm-8">@(Model.GhiChu ?? "—")</dd>
+    </dl>
+    @if (Context.Session.LayVaiTro() is Quyen.NhanVien or Quyen.QuanLy)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.MaSach" class="btn btn-primary">Sửa</a>
+        <a asp-action="Delete" asp-route-id="@Model.MaSach" class="btn btn-outline-danger">Xóa</a>
+    }
+    else if (Context.Session.LayVaiTro() == Quyen.BanDoc && Model.KhaDung)
+    {
+        <form asp-controller="PhieuMuon" asp-action="ThemVaoGio" method="post" class="d-inline">
+            <input type="hidden" name="maSach" value="@Model.MaSach" />
+            <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+            <button type="submit" class="btn btn-primary">Thêm vào giỏ mượn</button>
+        </form>
+    }
+    else if (!Context.Session.DaDangNhap() && Model.KhaDung)
+    {
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-primary">Đăng nhập để mượn</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </section>
+</div>

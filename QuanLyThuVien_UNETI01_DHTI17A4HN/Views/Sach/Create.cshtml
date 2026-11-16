@@ -1,0 +1,17 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Form thêm sách và chọn khóa ngoại từ dữ liệu Database (Module 2). *@
+@model SachViewModel
+@{
+    ViewData["Title"] = "Thêm sách";
+}
+<div class="container mt-4" style="max-width: 800px;">
+    <h2>Thêm sách</h2>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <partial name="_Form" model="Model" />
+        <button type="submit" class="btn btn-primary">Lưu sách</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

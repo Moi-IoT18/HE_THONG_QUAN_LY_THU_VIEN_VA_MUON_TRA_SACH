@@ -1,0 +1,169 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Danh sách sách với tìm kiếm, lọc, sắp xếp và phân trang (Module 2). *@
+@model SachDanhSachViewModel
+@{
+    ViewData["Title"] = "Danh sách sách";
+    var filter = Model.Filter;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2>Danh sách sách</h2>
+            <p class="text-muted mb-0">Trạng thái khả dụng dựa trên trạng thái phục vụ và số lượng còn.</p>
+        </div>
+        @if (Context.Session.LayVaiTro() is Quyen.NhanVien or Quyen.QuanLy)
+        {
+            <a asp-action="Create" class="btn btn-primary">Thêm sách</a>
+        }
+    </div>
+
+    @if (TempData["ThanhCong"] is string success)
+    {
+        <div class="alert alert-success">@success</div>
+    }
+    @if (TempData["Loi"] is string error)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <form id="book-search-form" method="get" asp-action="Index" class="card card-body mb-3">
+        <div class="row g-2">
+            <div class="col-lg-4">
+                <label for="TuKhoa" class="form-label">Tìm theo tên sách, tác giả, thể loại hoặc nhà xuất bản</label>
+                <input id="TuKhoa" name="TuKhoa" value="@filter.TuKhoa" class="form-control" />
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <label for="MaTheLoai" class="form-label">Thể loại</label>
+                <select id="MaTheLoai" name="MaTheLoai" asp-items="ViewBag.TheLoais" class="form-select">
+                    <option value="">Tất cả</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <label for="NamXuatBan" class="form-label">Năm xuất bản</label>
+                <input id="NamXuatBan" name="NamXuatBan" value="@filter.NamXuatBan" type="number" min="1900" max="@DateTime.Today.Year" class="form-control" />
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <label for="TrangThai" class="form-label">Trạng thái</label>
+                <select id="TrangThai" name="TrangThai" class="form-select">
+                    <option value="">Tất cả</option>
+                    <option value="ConPhucVu" selected="@(filter.TrangThai == TrangThaiSach.ConPhucVu)">Còn phục vụ</option>
+                    <option value="NgungPhucVu" selected="@(filter.TrangThai == TrangThaiSach.NgungPhucVu)">Ngừng phục vụ</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <label for="ConSach" class="form-label">Tình trạng kho</label>
+                <select id="ConSach" name="ConSach" class="form-select">
+                    <option value="">Tất cả</option>
+                    <option value="true" selected="@(filter.ConSach == true)">Còn sách</option>
+                    <option value="false" selected="@(filter.ConSach == false)">Hết sách</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="GiaTu" class="form-label">Giá từ</label>
+                <input id="GiaTu" name="GiaTu" value="@filter.GiaTu" type="number" min="0" step="1000" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label for="GiaDen" class="form-label">Giá đến</label>
+                <input id="GiaDen" name="GiaDen" value="@filter.GiaDen" type="number" min="0" step="1000" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label for="SapXep" class="form-label">Sắp xếp</label>
+                <select id="SapXep" name="SapXep" class="form-select">
+                    <option value="ten_asc" selected="@(filter.SapXep == "ten_asc")">Tên sách A → Z</option>
+                    <option value="ten_desc" selected="@(filter.SapXep == "ten_desc")">Tên sách Z → A</option>
+                    <option value="nam_asc" selected="@(filter.SapXep == "nam_asc")">Năm xuất bản tăng</option>
+                    <option value="nam_desc" selected="@(filter.SapXep == "nam_desc")">Năm xuất bản giảm</option>
+                    <option value="gia_asc" selected="@(filter.SapXep == "gia_asc")">Đơn giá tăng</option>
+                    <option value="gia_desc" selected="@(filter.SapXep == "gia_desc")">Đơn giá giảm</option>
+                    <option value="con_asc" selected="@(filter.SapXep == "con_asc")">Số lượng còn tăng</option>
+                    <option value="con_desc" selected="@(filter.SapXep == "con_desc")">Số lượng còn giảm</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">Tìm/Lọc</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Xóa lọc</a>
+            </div>
+        </div>
+    </form>
+
+    <div id="book-search-error" class="alert alert-danger" role="alert" hidden></div>
+    <div id="book-search-results" aria-live="polite">
+        <partial name="_DanhSach" model="Model" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const form = document.getElementById("book-search-form");
+            const results = document.getElementById("book-search-results");
+            const error = document.getElementById("book-search-error");
+            if (!form || !results || !error) return;
+
+            let activeRequest;
+            const loadResults = async (url, updateHistory) => {
+                activeRequest?.abort();
+                const request = new AbortController();
+                activeRequest = request;
+                error.hidden = true;
+                results.setAttribute("aria-busy", "true");
+                try {
+                    const response = await fetch(url, {
+                        headers: { "X-Requested-With": "XMLHttpRequest" },
+                        signal: request.signal
+                    });
+                    if (!response.ok) throw new Error(`Tải danh sách sách thất bại (HTTP ${response.status}).`);
+                    const html = await response.text();
+                    results.innerHTML = html;
+                    if (updateHistory) history.pushState(null, "", url);
+                } catch (requestError) {
+                    if (requestError.name === "AbortError") return;
+                    error.textContent = `${requestError.message} Đang chuyển sang tải trang thông thường.`;
+                    error.hidden = false;
+                    location.assign(url);
+                } finally {
+                    if (activeRequest === request)
+                        results.removeAttribute("aria-busy");
+                }
+            };
+
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+                const url = new URL(form.action, location.origin);
+                for (const [key, value] of new FormData(form)) {
+                    if (value) url.searchParams.set(key, value.toString());
+                    else url.searchParams.delete(key);
+                }
+                url.searchParams.delete("trang");
+                loadResults(url, true);
+            });
+
+            let searchDelay;
+            form.elements.namedItem("TuKhoa")?.addEventListener("input", () => {
+                clearTimeout(searchDelay);
+                searchDelay = setTimeout(() => form.requestSubmit(), 300);
+            });
+            form.querySelectorAll("select, input[type='number']").forEach(field =>
+                field.addEventListener("change", () => form.requestSubmit()));
+
+            results.addEventListener("click", event => {
+                const link = event.target.closest("a.page-link[href]");
+                if (!link || link.closest(".disabled")) return;
+                event.preventDefault();
+                loadResults(link.href, true);
+            });
+            addEventListener("popstate", () => {
+                const currentUrl = new URL(location.href);
+                for (const field of form.elements) {
+                    if (!field.name) continue;
+                    field.value = currentUrl.searchParams.get(field.name)
+                        ?? (field.name === "SapXep" ? "ten_asc" : "");
+                }
+                loadResults(currentUrl, false);
+            });
+        })();
+    </script>
+}

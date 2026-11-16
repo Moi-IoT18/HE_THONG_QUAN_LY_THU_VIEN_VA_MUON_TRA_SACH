@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="680" viewBox="0 0 480 680" role="img" aria-labelledby="title desc">
+  <title id="title">Cấu trúc dữ liệu và giải thuật với Java</title>
+  <desc id="desc">Bìa sách Java với hình minh họa cấu trúc nút liên kết màu cam.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#421d36"/><stop offset="1" stop-color="#9b4b37"/></linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd48d"/><stop offset="1" stop-color="#ff9e61"/></linearGradient>
+  </defs>
+  <path fill="#30152b" d="M22 18h458v662H22z"/>
+  <path fill="url(#bg)" d="M8 8h450v664H8z"/>
+  <circle cx="338" cy="192" r="136" fill="#ffb16d" opacity=".1"/>
+  <g fill="none" stroke="#ffd19a" stroke-opacity=".75" stroke-width="5">
+    <path d="m110 225 102-92 112 78-110 112-104-98 215-14"/>
+    <path d="m110 225 104 98 110-112"/>
+  </g>
+  <g fill="url(#node)" stroke="#fff0d4" stroke-width="3">
+    <circle cx="110" cy="225" r="17"/><circle cx="212" cy="133" r="17"/><circle cx="324" cy="211" r="17"/><circle cx="214" cy="323" r="17"/><circle cx="325" cy="211" r="17"/>
+  </g>
+  <text x="52" y="87" fill="#ffd7a5" font-family="Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="3">KHOA HỌC MÁY TÍNH</text>
+  <path d="M52 380h330" stroke="#ffd7a5" stroke-opacity=".55"/>
+  <text x="52" y="438" fill="#fff7eb" font-family="Arial,sans-serif" font-size="29" font-weight="700">CẤU TRÚC DỮ LIỆU</text>
+  <text x="52" y="481" fill="#ffe1ba" font-family="Arial,sans-serif" font-size="28">VÀ GIẢI THUẬT</text>
+  <text x="52" y="535" fill="#fff7eb" font-family="Arial,sans-serif" font-size="42" font-weight="700">với Java</text>
+  <text x="52" y="615" fill="#ffd7a5" font-family="Arial,sans-serif" font-size="15" letter-spacing="3">UNETI • 2023</text>
+</svg>
