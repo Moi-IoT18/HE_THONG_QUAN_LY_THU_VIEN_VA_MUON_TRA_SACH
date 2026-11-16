@@ -1,47 +1,136 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Bố cục giao diện thư viện và điều hướng theo quyền người dùng.
+   Bổ sung: Trịnh Thị Thanh Tâm - 23103100193; Phan Vũ Thanh Thư - 23103100316. *@
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuanLyThuVien_UNETI01_DHTI17A4HN</title>
+    <meta name="theme-color" content="#f5f4ed" />
+    <title>@ViewData["Title"] - Thư viện UNETI</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuanLyThuVien_UNETI01_DHTI17A4HN.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLyThuVien_UNETI01_DHTI17A4HN</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <header class="site-header">
+        <nav class="navbar navbar-expand-xxl">
+            <div class="container">
+                <a class="navbar-brand library-brand" asp-controller="Home" asp-action="Index" aria-label="Thư viện UNETI - Trang chủ">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <path d="M5 8.5c4.2-1.6 7.9-1 11 1.2v16c-3.1-2.2-6.8-2.8-11-1.2v-16Z" />
+                            <path d="M27 8.5c-4.2-1.6-7.9-1-11 1.2v16c3.1-2.2 6.8-2.8 11-1.2v-16Z" />
+                            <path d="M16 9.7v16" />
+                        </svg>
+                    </span>
+                    <span class="brand-copy">
+                        <strong>UNETI<span> đọc</span></strong>
+                        <small>THƯ VIỆN SỐ</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation" aria-expanded="false" aria-label="Mở menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="mainNavigation">
+                    <ul class="navbar-nav primary-navigation">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Sach" asp-action="Index">Khám phá sách</a>
                         </li>
+                        @if (Context.Session.DaDangNhap()
+                            && Context.Session.LayVaiTro() is Quyen.QuanLy or Quyen.NhanVien)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @(Context.Session.LayVaiTro() == Quyen.QuanLy ? "Quản trị" : "Nghiệp vụ")
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Tổng quan</a></li>
+                                    <li><a class="dropdown-item" asp-controller="XuLyPhieu" asp-action="Index">Xử lý phiếu mượn</a></li>
+                                    <li><a class="dropdown-item" asp-controller="BanDoc" asp-action="Index">Bạn đọc</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Sach" asp-action="Index">Quản lý sách</a></li>
+                                    @if (Context.Session.LayVaiTro() == Quyen.QuanLy)
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="TheLoai" asp-action="Index">Thể loại</a></li>
+                                        <li><a class="dropdown-item" asp-controller="NhaXuatBan" asp-action="Index">Nhà xuất bản</a></li>
+                                        <li><a class="dropdown-item" asp-controller="TaiKhoan" asp-action="Index">Tài khoản</a></li>
+                                    }
+                                    <li><a class="dropdown-item" asp-controller="ThongKe" asp-action="Index">Thống kê</a></li>
+                                    <li><a class="dropdown-item" asp-controller="QuaHan" asp-action="Index">Phiếu quá hạn</a></li>
+                                    <li><a class="dropdown-item" asp-controller="ChiTietMuon" asp-action="Index">Chi tiết mượn</a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
+
+                    <div class="account-navigation">
+                        @if (Context.Session.DaDangNhap())
+                        {
+                            <span class="welcome-user">
+                                <span class="welcome-dot"></span>
+                                <span>@Context.Session.LayHoTen()</span>
+                            </span>
+                            @if (Context.Session.LayVaiTro() == Quyen.BanDoc)
+                            {
+                                <a class="btn btn-soft" asp-controller="BanDoc" asp-action="HoSo">Hồ sơ</a>
+                                <a class="btn btn-soft" asp-controller="PhieuMuon" asp-action="GioMuon">Giỏ mượn</a>
+                                <a class="btn btn-soft" asp-controller="PhieuMuon" asp-action="CuaToi">Phiếu mượn</a>
+                            }
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="m-0">
+                                <button type="submit" class="btn btn-outline-dark">Đăng xuất</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="nav-login-link" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
+                            <a class="btn btn-primary" asp-controller="Auth" asp-action="Register">Tạo tài khoản <span aria-hidden="true">↗</span></a>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    @if (TempData["ThanhCong"] is string thongBaoThanhCong)
+    {
         <div class="container">
-            &copy; 2026 - QuanLyThuVien_UNETI01_DHTI17A4HN - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="alert alert-success app-alert" role="status">@thongBaoThanhCong</div>
+        </div>
+    }
+    @if (TempData["Loi"] is string thongBaoLoi)
+    {
+        <div class="container">
+            <div class="alert alert-danger app-alert" role="alert">@thongBaoLoi</div>
+        </div>
+    }
+    @if (TempData["CanhBao"] is string thongBaoCanhBao)
+    {
+        <div class="container">
+            <div class="alert alert-warning app-alert" role="status">@thongBaoCanhBao</div>
+        </div>
+    }
+
+    <main role="main" class="page-content">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <a class="footer-brand" asp-controller="Home" asp-action="Index">UNETI đọc</a>
+            <span>Không gian cho những ý tưởng lớn bắt đầu.</span>
+            <a asp-controller="Home" asp-action="Privacy">Quyền riêng tư</a>
+            <span class="footer-year">© 2026 Thư viện UNETI</span>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

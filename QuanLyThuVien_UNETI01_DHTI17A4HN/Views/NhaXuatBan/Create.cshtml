@@ -1,0 +1,17 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Form thêm nhà xuất bản với kiểm tra dữ liệu (Module 2). *@
+@model NhaXuatBanViewModel
+@{
+    ViewData["Title"] = "Thêm nhà xuất bản";
+}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Thêm nhà xuất bản</h2>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <partial name="_Form" model="Model" />
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

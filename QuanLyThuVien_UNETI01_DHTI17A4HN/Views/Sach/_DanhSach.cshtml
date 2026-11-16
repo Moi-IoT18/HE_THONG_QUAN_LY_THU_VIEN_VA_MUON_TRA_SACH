@@ -1,0 +1,65 @@
+@model SachDanhSachViewModel
+@{
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Bìa</th><th>Tên sách</th><th>Thể loại</th><th>Nhà xuất bản</th><th>Năm</th>
+                <th>Số lượng</th><th>Đơn giá</th><th>Trạng thái</th><th>Khả dụng</th><th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DanhSach.Items.Count == 0)
+            {
+                <tr><td colspan="10" class="text-center text-muted">Không tìm thấy sách phù hợp.</td></tr>
+            }
+            @foreach (var sach in Model.DanhSach.Items)
+            {
+                <tr>
+                    <td class="book-cover-cell"><partial name="_BookCover" model="sach.TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = sach.DuongDanAnhBia }' /></td>
+                    <td>@sach.TenSach</td>
+                    <td>@sach.TheLoai?.TenTheLoai</td>
+                    <td>@sach.NhaXuatBan?.TenNhaXuatBan</td>
+                    <td>@sach.NamXuatBan</td>
+                    <td>@sach.SoLuongCon / @sach.SoLuong</td>
+                    <td>@sach.DonGia.ToString("N0") đ</td>
+                    <td>@Html.DisplayFor(_ => sach.TrangThai)</td>
+                    <td>
+                        @if (sach.KhaDung) { <span class="badge bg-success">Còn khả dụng</span> }
+                        else { <span class="badge bg-secondary">Không khả dụng</span> }
+                    </td>
+                    <td class="text-nowrap">
+                        <a asp-action="Details" asp-route-id="@sach.MaSach" class="btn btn-sm btn-outline-info">Chi tiết</a>
+                        @if (Context.Session.LayVaiTro() == Quyen.BanDoc)
+                        {
+                            @if (sach.KhaDung)
+                            {
+                                <form asp-controller="PhieuMuon" asp-action="ThemVaoGio" method="post" class="d-inline">
+                                    <input type="hidden" name="maSach" value="@sach.MaSach" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Thêm vào giỏ</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Không thể mượn</span>
+                            }
+                        }
+                        else if (Context.Session.LayVaiTro() is Quyen.NhanVien or Quyen.QuanLy)
+                        {
+                            <a asp-action="Edit" asp-route-id="@sach.MaSach" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@sach.MaSach" class="btn btn-sm btn-outline-danger">Xóa</a>
+                        }
+                        else if (!Context.Session.DaDangNhap() && sach.KhaDung)
+                        {
+                            <a asp-controller="Auth" asp-action="Login" class="btn btn-sm btn-outline-primary">Đăng nhập để mượn</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<partial name="_PhanTrang" model="Model.DanhSach" />

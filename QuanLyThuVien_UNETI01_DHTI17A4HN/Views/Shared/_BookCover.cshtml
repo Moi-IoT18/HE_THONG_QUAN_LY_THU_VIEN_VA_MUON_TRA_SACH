@@ -1,0 +1,9 @@
+@model string
+@{
+    var coverClass = ViewData["CoverClass"] as string ?? "book-cover-image";
+    var uploadedCover = ViewData["CoverUrl"] as string;
+    var coverPath = uploadedCover?.StartsWith("/uploads/books/", StringComparison.Ordinal) == true
+        ? uploadedCover
+        : BookCoverHelper.GetCoverPath(Model);
+}
+<img class="@coverClass" src="@coverPath" alt="Bìa sách: @Model" loading="lazy" decoding="async" />

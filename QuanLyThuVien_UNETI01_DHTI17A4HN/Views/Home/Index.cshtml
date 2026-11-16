@@ -1,8 +1,111 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Trang chủ thư viện với số liệu thực tế và giao diện tương tác chiều sâu. *@
+@model TrangChuViewModel
+@{
+    ViewData["Title"] = "Thư viện tri thức";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="home-hero">
+    <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+    <div class="container hero-layout">
+        <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> THƯ VIỆN ĐẠI HỌC UNETI</div>
+            <h1>Mỗi trang sách,<br />một <span>thế giới mới.</span></h1>
+            <p class="hero-description">
+                Chạm vào kho tri thức, tìm cuốn sách dành riêng cho bạn và bắt đầu hành trình đọc theo cách của mình.
+            </p>
+            <div class="hero-actions">
+                <a asp-controller="Sach" asp-action="Index" class="btn btn-primary btn-hero">
+                    Khám phá thư viện <span aria-hidden="true">↗</span>
+                </a>
+                @if (Context.Session.DaDangNhap())
+                {
+                    <a asp-controller="PhieuMuon" asp-action="GioMuon" class="btn btn-hero-secondary">Tạo phiếu mượn</a>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-hero-secondary">Tham gia miễn phí</a>
+                }
+            </div>
+            <div class="hero-note">
+                <span class="note-stars" aria-hidden="true">✦ ✦ ✦ ✦ ✦</span>
+                <span>Không gian đọc dành cho cộng đồng UNETI</span>
+            </div>
+        </div>
+
+        <div class="hero-art" aria-label="Minh họa những cuốn sách trong thư viện">
+            <div class="art-glow"></div>
+            <div class="floating-label label-top"><span class="label-icon">✳</span><span>Tri thức<br /><strong>không giới hạn</strong></span></div>
+            <div class="book-scene">
+                <div class="book book-back book-back-left">
+                    <span class="book-side"></span>
+                    <span class="book-cover"><i></i><b>VĂN HỌC<br />VIỆT NAM</b><small>tuyển tập</small></span>
+                </div>
+                <div class="book book-back book-back-right">
+                    <span class="book-side"></span>
+                    <span class="book-cover"><i></i><b>THẾ GIỚI<br />TỰ NHIÊN</b><small>khám phá</small></span>
+                </div>
+                <div class="book book-front">
+                    <span class="book-side"></span>
+                    <span class="book-cover"><i></i><b>THE ART<br />OF READING</b><small>UNETI · 2026</small></span>
+                </div>
+                <div class="book-shadow"></div>
+            </div>
+            <div class="floating-label label-bottom"><span class="label-icon">↗</span><span>Khám phá<br /><strong>cuốn sách tiếp theo</strong></span></div>
+            <span class="art-spark spark-one" aria-hidden="true">✦</span>
+            <span class="art-spark spark-two" aria-hidden="true">✧</span>
+        </div>
+    </div>
+    <div class="hero-bottom-line" aria-hidden="true"><span></span></div>
+</section>
+
+<section class="container library-highlights" aria-label="Thông tin thư viện">
+    <div class="highlights-heading">
+        <div>
+            <span class="section-kicker">KHO TRI THỨC CỦA BẠN</span>
+            <h2>Sẵn sàng để <em>khám phá?</em></h2>
+        </div>
+        <p>Dữ liệu thư viện được cập nhật trực tiếp<br />để bạn luôn tìm thấy điều mình cần.</p>
+    </div>
+
+    <div class="stats-grid">
+        <article class="stat-card stat-card-primary">
+            <div class="stat-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none"><path d="M5 8.5c4.2-1.6 7.9-1 11 1.2v16c-3.1-2.2-6.8-2.8-11-1.2v-16Z"/><path d="M27 8.5c-4.2-1.6-7.9-1-11 1.2v16c3.1-2.2 6.8-2.8 11-1.2v-16Z"/><path d="M16 9.7v16"/></svg>
+            </div>
+            <span class="stat-label">ĐẦU SÁCH</span>
+            <strong class="stat-number">@Model.TongSoSach.ToString("N0")</strong>
+            <span class="stat-foot">Đang được lưu trữ</span>
+            <span class="stat-index">01</span>
+        </article>
+        <article class="stat-card stat-card-sand">
+            <div class="stat-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10.5"/><path d="M16 5.5v21M5.5 16h21M8.6 8.6l14.8 14.8M23.4 8.6 8.6 23.4"/></svg>
+            </div>
+            <span class="stat-label">THỂ LOẠI</span>
+            <strong class="stat-number">@Model.TongSoTheLoai.ToString("N0")</strong>
+            <span class="stat-foot">Nhiều chủ đề thú vị</span>
+            <span class="stat-index">02</span>
+        </article>
+        <article class="stat-card stat-card-lime">
+            <div class="stat-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none"><path d="m6 16 6.2 6.2L26 8.5"/><circle cx="16" cy="16" r="11.5"/></svg>
+            </div>
+            <span class="stat-label">SẴN SÀNG CHO MƯỢN</span>
+            <strong class="stat-number">@Model.SoBanSachKhaDung.ToString("N0")</strong>
+            <span class="stat-foot">Đầu sách khả dụng hôm nay</span>
+            <span class="stat-index">03</span>
+        </article>
+    </div>
+</section>
+
+<section class="container discover-strip">
+    <div class="discover-stamp" aria-hidden="true">ĐỌC<br />MỖI<br />NGÀY</div>
+    <div>
+        <span class="section-kicker">MỘT CUỐN SÁCH CÓ THỂ MỞ RA CẢ THẾ GIỚI</span>
+        <h2>Ý tưởng lớn bắt đầu từ một trang sách.</h2>
+    </div>
+    <a asp-controller="Sach" asp-action="Index" class="discover-link">Tìm sách cho mình <span aria-hidden="true">⟶</span></a>
+</section>

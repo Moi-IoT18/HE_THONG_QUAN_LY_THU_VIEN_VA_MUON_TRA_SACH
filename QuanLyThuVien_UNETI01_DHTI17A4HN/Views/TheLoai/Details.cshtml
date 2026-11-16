@@ -1,0 +1,27 @@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TheLoai
+@{
+    ViewData["Title"] = "Chi tiết thể loại";
+}
+
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Chi tiết thể loại</h2>
+    <dl class="row mt-3">
+        <dt class="col-sm-4">Mã thể loại</dt>
+        <dd class="col-sm-8">@Model.MaTheLoai</dd>
+
+        <dt class="col-sm-4">Tên thể loại</dt>
+        <dd class="col-sm-8">@Model.TenTheLoai</dd>
+
+        <dt class="col-sm-4">Mô tả</dt>
+        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.MoTa) ? "—" : Model.MoTa)</dd>
+
+        <dt class="col-sm-4">Thứ tự hiển thị</dt>
+        <dd class="col-sm-8">@Model.ThuTuHienThi</dd>
+
+        <dt class="col-sm-4">Trạng thái</dt>
+        <dd class="col-sm-8">@(Model.TrangThai ? "Hoạt động" : "Khóa")</dd>
+    </dl>
+
+    <a asp-action="Edit" asp-route-id="@Model.MaTheLoai" class="btn btn-primary">Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</div>

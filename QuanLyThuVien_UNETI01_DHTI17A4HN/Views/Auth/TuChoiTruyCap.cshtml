@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Từ chối truy cập";
+}
+
+<div class="alert alert-danger mt-4">
+    <h4 class="alert-heading">Bạn không có quyền truy cập chức năng này.</h4>
+    <p class="mb-0">Vui lòng đăng nhập bằng tài khoản phù hợp hoặc quay lại trang chủ.</p>
+</div>
+
+<a asp-controller="Home" asp-action="Index" class="btn btn-primary">Về trang chủ</a>
+<a asp-controller="Auth" asp-action="Login" class="btn btn-outline-secondary">Đăng nhập khác</a>

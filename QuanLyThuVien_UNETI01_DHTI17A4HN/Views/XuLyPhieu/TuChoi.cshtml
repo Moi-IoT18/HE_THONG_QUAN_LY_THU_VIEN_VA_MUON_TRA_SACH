@@ -1,0 +1,15 @@
+@* Họ và tên: Trịnh Thị Thanh Tâm
+   Mã sinh viên: 23103100193
+   Nội dung thực hiện: Từ chối phiếu chờ duyệt với lý do bắt buộc. *@
+@model PhieuMuon
+@{ ViewData["Title"] = $"Từ chối phiếu #{Model.MaPhieuMuon}"; }
+<h3 class="page-title">Từ chối phiếu #@Model.MaPhieuMuon</h3>
+<partial name="_ThongTinPhieu" model="Model" />
+<form asp-action="TuChoi" asp-route-id="@Model.MaPhieuMuon" method="post">
+    <div class="mb-3">
+        <label for="lyDo" class="form-label">Lý do từ chối</label>
+        <textarea id="lyDo" name="lyDo" class="form-control" rows="3" maxlength="450" required></textarea>
+    </div>
+    <button class="btn btn-danger">Xác nhận từ chối</button>
+    <a asp-action="Details" asp-route-id="@Model.MaPhieuMuon" class="btn btn-outline-secondary">Quay lại</a>
+</form>

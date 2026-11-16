@@ -1,0 +1,75 @@
+@model TaiKhoanEditViewModel
+
+@{
+    ViewData["Title"] = "Cập nhật Tài khoản";
+    var isAdmin = ViewBag.IsAdmin is bool admin && admin;
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2>Cập Nhật Thông Tin Tài Khoản</h2>
+    <div class="text-muted mb-3 small">Thực hiện bởi: Nguyễn Thế Đông - 23103100187</div>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="MaTaiKhoan" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Mã tài khoản</label>
+            <input class="form-control" value="@Model.MaTaiKhoan" disabled />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="HoTen" class="form-label fw-semibold"></label>
+            <input asp-for="HoTen" class="form-control" />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label fw-semibold"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        @if (!isAdmin || Model.MaTaiKhoan == (Context.Session.GetInt32(SessionKeys.MaTaiKhoan) ?? 0))
+        {
+            <div class="mb-3">
+                <label asp-for="MatKhauCu" class="form-label fw-semibold">Mật khẩu hiện tại (bắt buộc khi đổi mật khẩu)</label>
+                <input asp-for="MatKhauCu" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="MatKhauCu" class="text-danger"></span>
+            </div>
+        }
+
+        <div class="mb-3">
+            <label asp-for="MatKhauMoi" class="form-label fw-semibold">Mật khẩu mới (để trống nếu không đổi)</label>
+            <input asp-for="MatKhauMoi" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="MatKhauMoi" class="text-danger"></span>
+        </div>
+
+        @if (isAdmin)
+        {
+            <div class="mb-3">
+                <label asp-for="VaiTro" class="form-label fw-semibold"></label>
+                <select asp-for="VaiTro" class="form-select" asp-items="Html.GetEnumSelectList<VaiTro>()"></select>
+                <span asp-validation-for="VaiTro" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input asp-for="TrangThai" class="form-check-input" />
+                <label asp-for="TrangThai" class="form-check-label fw-semibold">Tài khoản hoạt động</label>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-warning px-4">Cập nhật</button>
+        @if (isAdmin)
+        {
+            <a asp-action="Index" class="btn btn-secondary px-4">Quay lại</a>
+        }
+        else
+        {
+            <a asp-action="Details" asp-route-id="@Model.MaTaiKhoan" class="btn btn-secondary px-4">Quay lại</a>
+        }
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

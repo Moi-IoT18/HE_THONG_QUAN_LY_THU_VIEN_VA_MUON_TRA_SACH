@@ -1,0 +1,35 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Danh sách và điều hướng quản lý nhà xuất bản (Module 2). *@
+@model IEnumerable<NhaXuatBan>
+@{
+    ViewData["Title"] = "Nhà xuất bản";
+}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Quản lý nhà xuất bản</h2>
+        <a asp-action="Create" class="btn btn-primary">Thêm nhà xuất bản</a>
+    </div>
+    @if (TempData["ThanhCong"] is string success) { <div class="alert alert-success">@success</div> }
+    @if (TempData["Loi"] is string error) { <div class="alert alert-danger">@error</div> }
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr><th>Tên nhà xuất bản</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th>Trạng thái</th><th>Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenNhaXuatBan</td><td>@item.DiaChi</td><td>@item.SoDienThoai</td><td>@item.Email</td>
+                        <td>@(item.TrangThai ? "Đang hợp tác" : "Ngừng hợp tác")</td>
+                        <td class="text-nowrap">
+                            <a asp-action="Edit" asp-route-id="@item.MaNhaXuatBan" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaNhaXuatBan" class="btn btn-sm btn-outline-danger">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

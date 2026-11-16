@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="680" viewBox="0 0 480 680" role="img" aria-labelledby="title desc">
+  <title id="title">Lập trình C# cơ bản và nâng cao</title>
+  <desc id="desc">Bìa sách lập trình với các khối mã trên nền xanh đậm.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#122b42"/><stop offset="1" stop-color="#285b69"/></linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70e0c3"/><stop offset="1" stop-color="#b6f2d8"/></linearGradient>
+  </defs>
+  <path fill="#081a2a" d="M22 18h458v662H22z"/>
+  <path fill="url(#bg)" d="M8 8h450v664H8z"/>
+  <path fill="none" stroke="#90eed1" stroke-opacity=".18" stroke-width="2" d="M40 40h386v600H40z"/>
+  <circle cx="358" cy="158" r="115" fill="#70e0c3" opacity=".09"/>
+  <path d="m88 228 68-48 40 25-68 48zm126-48 68 48-40 25-68-48zM151 296l78-105 32 20-78 105z" fill="url(#light)"/>
+  <text x="54" y="106" fill="#a2e8d2" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="4">LẬP TRÌNH • CÔNG NGHỆ</text>
+  <path d="M54 365h320" stroke="#a2e8d2" stroke-opacity=".5"/>
+  <text x="54" y="425" fill="#f3f8f2" font-family="Arial,sans-serif" font-size="34" font-weight="700">LẬP TRÌNH</text>
+  <text x="54" y="470" fill="#b9f1dd" font-family="Arial,sans-serif" font-size="38" font-weight="700">C#</text>
+  <text x="54" y="515" fill="#f3f8f2" font-family="Arial,sans-serif" font-size="24">CƠ BẢN VÀ</text>
+  <text x="54" y="548" fill="#f3f8f2" font-family="Arial,sans-serif" font-size="24">NÂNG CAO</text>
+  <text x="54" y="615" fill="#a2e8d2" font-family="Arial,sans-serif" font-size="15" letter-spacing="3">UNETI • 2024</text>
+</svg>

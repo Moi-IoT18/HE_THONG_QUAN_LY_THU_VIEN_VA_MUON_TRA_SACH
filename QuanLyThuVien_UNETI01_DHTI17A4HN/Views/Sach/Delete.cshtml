@@ -1,0 +1,21 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Xác nhận xóa sách; controller ngăn xóa sách có lịch sử (Module 2). *@
+@model Sach
+@{
+    ViewData["Title"] = "Xóa sách";
+}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2 class="text-danger">Xóa sách</h2>
+    <div class="alert alert-warning">Chỉ sách chưa phát sinh lịch sử mượn mới được xóa.</div>
+    <partial name="_BookCover" model="Model.TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = Model.DuongDanAnhBia }' />
+    <dl class="row">
+        <dt class="col-sm-4">Tên sách</dt><dd class="col-sm-8">@Model.TenSach</dd>
+        <dt class="col-sm-4">Thể loại</dt><dd class="col-sm-8">@Model.TheLoai?.TenTheLoai</dd>
+        <dt class="col-sm-4">Nhà xuất bản</dt><dd class="col-sm-8">@Model.NhaXuatBan?.TenNhaXuatBan</dd>
+    </dl>
+    <form asp-action="Delete" asp-route-id="@Model.MaSach" method="post">
+        <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+        <a asp-action="Details" asp-route-id="@Model.MaSach" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

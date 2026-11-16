@@ -1,0 +1,18 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Form sửa nhà xuất bản và trạng thái hợp tác (Module 2). *@
+@model NhaXuatBanViewModel
+@{
+    ViewData["Title"] = "Sửa nhà xuất bản";
+}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Sửa nhà xuất bản</h2>
+    <form asp-action="Edit" asp-route-id="@Model.MaNhaXuatBan" method="post">
+        <input asp-for="MaNhaXuatBan" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <partial name="_Form" model="Model" />
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

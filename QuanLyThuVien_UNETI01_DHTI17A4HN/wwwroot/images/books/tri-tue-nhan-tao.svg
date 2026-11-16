@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="680" viewBox="0 0 480 680" role="img" aria-labelledby="title desc">
+  <title id="title">Nhập môn Trí tuệ nhân tạo</title>
+  <desc id="desc">Bìa sách về trí tuệ nhân tạo với mạng nơ-ron phát sáng trên nền tím xanh.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#181c48"/><stop offset=".55" stop-color="#39346c"/><stop offset="1" stop-color="#185d70"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#7af0e2" stop-opacity=".85"/><stop offset="1" stop-color="#7af0e2" stop-opacity="0"/></radialGradient>
+  </defs>
+  <path fill="#121538" d="M22 18h458v662H22z"/>
+  <path fill="url(#bg)" d="M8 8h450v664H8z"/>
+  <circle cx="244" cy="218" r="164" fill="url(#glow)" opacity=".55"/>
+  <g fill="none" stroke="#9beee6" stroke-opacity=".7" stroke-width="3">
+    <path d="m104 139 98 64 92-79 84 80-103 91-107-15-64-141 171 156 103-91-176-13-98 91 171-156"/>
+  </g>
+  <g fill="#c6fff0" stroke="#55cfc6" stroke-width="5">
+    <circle cx="104" cy="139" r="11"/><circle cx="202" cy="203" r="13"/><circle cx="294" cy="124" r="12"/><circle cx="378" cy="204" r="12"/><circle cx="271" cy="295" r="14"/><circle cx="168" cy="280" r="12"/><circle cx="104" cy="371" r="11"/><circle cx="342" cy="371" r="12"/>
+  </g>
+  <text x="52" y="87" fill="#b4f7ea" font-family="Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="3">KHOA HỌC • TƯƠNG LAI</text>
+  <path d="M52 423h330" stroke="#b4f7ea" stroke-opacity=".5"/>
+  <text x="52" y="485" fill="#f2fbff" font-family="Arial,sans-serif" font-size="32" font-weight="700">NHẬP MÔN</text>
+  <text x="52" y="533" fill="#b4f7ea" font-family="Arial,sans-serif" font-size="30" font-weight="700">TRÍ TUỆ NHÂN TẠO</text>
+  <text x="52" y="615" fill="#b4f7ea" font-family="Arial,sans-serif" font-size="15" letter-spacing="3">UNETI • 2022</text>
+</svg>

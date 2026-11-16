@@ -1,0 +1,18 @@
+@* Họ và tên: Trần Gia Nghĩa
+   Mã sinh viên: 23103100228
+   Nội dung thực hiện: Form sửa sách và kiểm tra ràng buộc số lượng (Module 2). *@
+@model SachViewModel
+@{
+    ViewData["Title"] = "Sửa sách";
+}
+<div class="container mt-4" style="max-width: 800px;">
+    <h2>Sửa sách</h2>
+    <form asp-action="Edit" asp-route-id="@Model.MaSach" method="post" enctype="multipart/form-data">
+        <input asp-for="MaSach" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <partial name="_Form" model="Model" />
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a asp-action="Details" asp-route-id="@Model.MaSach" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

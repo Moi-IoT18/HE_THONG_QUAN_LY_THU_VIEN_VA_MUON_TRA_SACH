@@ -21,3 +21,7 @@ nupkgs/
 .idea/
 .vscode/
 .DS_Store
+
+# Temporary / runtime uploads
+QuanLyThuVien_UNETI01_DHTI17A4HN/wwwroot/uploads/*
+!QuanLyThuVien_UNETI01_DHTI17A4HN/wwwroot/uploads/.gitkeep

@@ -1,0 +1,79 @@
+﻿@* Họ và tên: Đặng Thị Phượng
+   Mã sinh viên: 23103100182
+   Nội dung thực hiện: Giỏ mượn – xem sách đã chọn, cảnh báo điều kiện, gửi đăng ký mượn. *@
+@model GioMuonViewModel
+@{ ViewData["Title"] = "Giỏ mượn"; }
+<div class="container cart-page">
+<div class="cart-page-heading">
+    <div>
+        <span class="book-details-kicker">DANH SÁCH ĐÃ CHỌN</span>
+        <h1 class="page-title">Giỏ mượn của tôi</h1>
+        <p>Kiểm tra thông tin từng cuốn sách trước khi gửi đăng ký mượn.</p>
+    </div>
+    @if (Model.Sachs.Any())
+    {
+        <span class="cart-count">@Model.Sachs.Count cuốn sách</span>
+    }
+</div>
+@if (!Model.Sachs.Any())
+{
+    <div class="card"><div class="card-body text-center py-5">
+        <i class="bi bi-cart3 display-4 text-muted"></i>
+        <p class="mt-3 text-muted">Giỏ mượn đang trống.</p>
+        <a asp-controller="Sach" asp-action="Index" class="btn btn-thuvien"><i class="bi bi-search me-1"></i>Tra cứu sách</a>
+    </div></div>
+}
+else
+{
+    @if (Model.CanhBao.Any())
+    {
+        <div class="alert alert-warning">
+            <strong><i class="bi bi-exclamation-triangle me-1"></i>Chưa đủ điều kiện mượn:</strong>
+            <ul class="mb-0">@foreach (var cb in Model.CanhBao) { <li>@cb</li> }</ul>
+        </div>
+    }
+    <div class="cart-book-list">
+        @foreach (var s in Model.Sachs)
+        {
+            <article class="cart-book-card">
+                <a class="cart-book-cover" asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach" aria-label="Xem chi tiết: @s.TenSach">
+                    <partial name="_BookCover" model="s.TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-large", ["CoverUrl"] = s.DuongDanAnhBia }' />
+                </a>
+                <div class="cart-book-information">
+                    <span class="cart-book-id">MÃ SÁCH #@s.MaSach</span>
+                    <h2><a asp-controller="Sach" asp-action="Details" asp-route-id="@s.MaSach">@s.TenSach</a></h2>
+                    <p class="cart-book-author">Tác giả: @(s.TacGia ?? "Chưa cập nhật")</p>
+                    <dl class="cart-book-metadata">
+                        <div><dt>Thể loại</dt><dd>@(s.TheLoai?.TenTheLoai ?? "Chưa phân loại")</dd></div>
+                        <div><dt>Nhà xuất bản</dt><dd>@(s.NhaXuatBan?.TenNhaXuatBan ?? "Chưa cập nhật")</dd></div>
+                        <div><dt>Năm xuất bản</dt><dd>@s.NamXuatBan</dd></div>
+                        <div><dt>Vị trí kệ</dt><dd>@(s.ViTriKeSach ?? "Chưa cập nhật")</dd></div>
+                        <div><dt>Số lượng còn</dt><dd>@s.SoLuongCon / @s.SoLuong cuốn</dd></div>
+                        <div><dt>Đơn giá</dt><dd>@s.DonGia.ToString("N0") đ</dd></div>
+                    </dl>
+                </div>
+                <div class="cart-book-actions">
+                    @if (s.KhaDung) { <span class="badge bg-success">Còn khả dụng</span> }
+                    else { <span class="badge bg-danger">Không khả dụng</span> }
+                    <form asp-action="XoaKhoiGio" method="post" class="d-inline">
+                        <input type="hidden" name="maSach" value="@s.MaSach" />
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i> Bỏ khỏi giỏ</button>
+                    </form>
+                </div>
+            </article>
+        }
+    </div>
+    <div class="card"><div class="card-body">
+        <form asp-action="TaoPhieu" method="post">
+            <h2 class="h5">Xác nhận đăng ký mượn</h2>
+            <p class="mb-2">Tổng số sách: <strong>@Model.Sachs.Count cuốn</strong> · Hạn trả dự kiến: <strong>@Model.HanTraDuKien.ToString("dd/MM/yyyy")</strong> (@QuyDinh.SoNgayMuon ngày kể từ hôm nay)</p>
+            <div class="mb-3">
+                <label class="form-label" for="ghiChu">Ghi chú cho thủ thư (không bắt buộc)</label>
+                <textarea id="ghiChu" name="ghiChu" class="form-control" rows="2" maxlength="500"></textarea>
+            </div>
+            <button class="btn btn-thuvien" @(Model.CanhBao.Any() ? "disabled" : "")><i class="bi bi-send me-1"></i>Gửi đăng ký mượn</button>
+            <a asp-controller="Sach" asp-action="Index" class="btn btn-outline-secondary">Chọn thêm sách</a>
+        </form>
+    </div></div>
+}
+</div>

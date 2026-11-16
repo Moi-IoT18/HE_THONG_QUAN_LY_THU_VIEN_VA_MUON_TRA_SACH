@@ -1,0 +1,57 @@
+@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Danh sách tra cứu chi tiết mượn; kết quả chỉ được cập nhật qua chức năng nhận trả. *@
+@model ChiTietMuonViewModel
+@{
+    ViewData["Title"] = "Chi tiết mượn";
+}
+
+<h2 class="page-title">Chi tiết mượn sách</h2>
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-5">
+        <label asp-for="TuKhoa" class="form-label">Bạn đọc, sách hoặc mã phiếu</label>
+        <input asp-for="TuKhoa" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="TrangThai" class="form-label">Trạng thái phiếu</label>
+        <select asp-for="TrangThai" asp-items="UiHelper.DanhSachEnum(Model.TrangThai)" class="form-select">
+            <option value="">Tất cả trạng thái</option>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+        <button class="btn btn-thuvien" type="submit">Lọc</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Xóa lọc</a>
+    </div>
+</form>
+
+<div class="card"><div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead><tr><th>Phiếu</th><th>Bạn đọc</th><th>Bìa</th><th>Sách</th><th>Số lượng</th><th>Ngày quá hạn</th><th>Tiền phạt</th><th>Tình trạng trả</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var item in Model.DanhSach!.Items)
+        {
+            var laPhieuDangMuon = item.PhieuMuon?.TrangThai is TrangThaiPhieu.DangMuon or TrangThaiPhieu.QuaHan;
+            var soNgayQuaHan = laPhieuDangMuon
+                ? QuaHanService.TinhSoNgayQuaHan(item.PhieuMuon!.HanTra) : item.SoNgayQuaHan;
+            var tienPhat = laPhieuDangMuon
+                ? QuaHanService.TinhTienPhatTamTinh(item.PhieuMuon!.HanTra, item.SoLuong) : item.TienPhat;
+            <tr>
+                <td>#@item.MaPhieuMuon</td>
+                <td>@item.PhieuMuon?.BanDoc?.HoTen</td>
+                <td class="book-cover-cell"><partial name="_BookCover" model="item.Sach?.TenSach ?? string.Empty" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = item.Sach?.DuongDanAnhBia }' /></td>
+                <td>@item.Sach?.TenSach</td>
+                <td>@item.SoLuong</td>
+                <td>@soNgayQuaHan</td>
+                <td>@UiHelper.Tien(tienPhat) @if (laPhieuDangMuon && tienPhat > 0) { <span class="small text-muted">Tạm tính</span> }</td>
+                <td>@(item.TinhTrangTra?.TenHienThi() ?? "Chưa ghi nhận")</td>
+                <td><a asp-action="Details" asp-route-id="@item.MaChiTiet" class="btn btn-sm btn-outline-primary">Chi tiết</a></td>
+            </tr>
+        }
+        @if (Model.DanhSach.Items.Count == 0)
+        {
+            <tr><td colspan="9" class="text-center text-muted py-4">Không có chi tiết mượn phù hợp.</td></tr>
+        }
+        </tbody>
+    </table>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />

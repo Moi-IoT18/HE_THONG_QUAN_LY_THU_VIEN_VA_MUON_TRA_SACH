@@ -1,0 +1,31 @@
+@model TaiKhoan
+@{
+    ViewData["Title"] = "Chi tiết tài khoản";
+}
+
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Chi tiết tài khoản</h2>
+    @if (TempData["ThanhCong"] is string success)
+    {
+        <div class="alert alert-success">@success</div>
+    }
+    <dl class="row mt-3">
+        <dt class="col-sm-4">Mã tài khoản</dt>
+        <dd class="col-sm-8">@Model.MaTaiKhoan</dd>
+        <dt class="col-sm-4">Tên đăng nhập</dt>
+        <dd class="col-sm-8">@Model.TenDangNhap</dd>
+        <dt class="col-sm-4">Họ tên</dt>
+        <dd class="col-sm-8">@Model.HoTen</dd>
+        <dt class="col-sm-4">Email</dt>
+        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Email) ? "—" : Model.Email)</dd>
+        <dt class="col-sm-4">Vai trò</dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.VaiTro)</dd>
+        <dt class="col-sm-4">Trạng thái</dt>
+        <dd class="col-sm-8">@(Model.TrangThai ? "Hoạt động" : "Đã khóa")</dd>
+    </dl>
+    <a asp-action="Edit" asp-route-id="@Model.MaTaiKhoan" class="btn btn-primary">Sửa thông tin</a>
+    @if (Context.Session.LayVaiTro() == Quyen.QuanLy)
+    {
+        <a asp-action="Index" class="btn btn-secondary">Danh sách</a>
+    }
+</div>

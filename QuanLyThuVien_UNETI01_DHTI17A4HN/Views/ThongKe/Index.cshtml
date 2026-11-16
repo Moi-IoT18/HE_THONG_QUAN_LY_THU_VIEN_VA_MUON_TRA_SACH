@@ -1,0 +1,214 @@
+@* Nội dung thực hiện: Báo cáo thống kê hoạt động thư viện. *@
+@model ThongKeViewModel
+@{
+    ViewData["Title"] = "Thống kê";
+}
+
+<div class="container analytics-page">
+    <section class="analytics-heading">
+        <div>
+            <span class="analytics-eyebrow">PHÂN TÍCH VÀ BÁO CÁO</span>
+            <h1>Thống kê thư viện</h1>
+            <p>Tổng hợp tình hình mượn trả, tài nguyên sách và tiền phạt.</p>
+        </div>
+        <div class="analytics-heading-actions">
+            <a asp-action="Excel" class="btn btn-outline-success"><span aria-hidden="true">↓</span> Xuất Excel</a>
+            <a asp-action="Pdf" class="btn btn-primary"><span aria-hidden="true">↓</span> Xuất PDF</a>
+        </div>
+    </section>
+
+    <section class="analytics-kpi-grid report-kpi-grid" aria-label="Các chỉ số thống kê">
+        <article class="analytics-kpi analytics-kpi-amber">
+            <span class="analytics-kpi-icon">TRỄ</span>
+            <span class="analytics-kpi-label">Phiếu quá hạn</span>
+            <strong>@Model.SoPhieuQuaHan.ToString("N0")</strong>
+            <small>Đang quá hạn hoặc chưa trả đúng hạn</small>
+        </article>
+        <article class="analytics-kpi">
+            <span class="analytics-kpi-icon">₫</span>
+            <span class="analytics-kpi-label">Tổng tiền phạt</span>
+            <strong class="analytics-kpi-money">@UiHelper.Tien(Model.TongTienPhat)</strong>
+            <small>Tiền phạt đã chốt trên phiếu đã trả</small>
+        </article>
+        <article class="analytics-kpi analytics-kpi-green">
+            <span class="analytics-kpi-icon">THU</span>
+            <span class="analytics-kpi-label">Đã thu</span>
+            <strong class="analytics-kpi-money">@UiHelper.Tien(Model.TongTienPhatDaNop)</strong>
+            <small>Đã được nhân viên xác nhận</small>
+        </article>
+        <article class="analytics-kpi analytics-kpi-red">
+            <span class="analytics-kpi-icon">NỢ</span>
+            <span class="analytics-kpi-label">Còn phải thu</span>
+            <strong class="analytics-kpi-money">@UiHelper.Tien(Model.TongTienPhatChuaNop)</strong>
+            <small>Chưa ghi nhận thanh toán</small>
+        </article>
+    </section>
+
+    <section class="analytics-summary-strip" aria-label="Tóm tắt trả sách">
+        <div><span>Phiếu đã trả</span><strong>@Model.TongPhieuDaTra.ToString("N0")</strong></div>
+        <div><span>Trả đúng hạn</span><strong>@Model.PhieuTraDungHan.ToString("N0")</strong></div>
+        <div class="summary-rate"><span>Tỷ lệ trả đúng hạn</span><strong>@Model.TyLeTraDungHan.ToString("N2")%</strong></div>
+    </section>
+
+    <section class="analytics-content-grid report-chart-grid">
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div><span class="analytics-eyebrow">QUY MÔ KHO SÁCH</span><h2>Sách theo thể loại</h2></div>
+                <span class="analytics-period">@Model.SachTheoTheLoai.Count.ToString("N0") thể loại</span>
+            </div>
+            @if (Model.SachTheoTheLoai.Count > 0)
+            {
+                <div class="analytics-chart-wrap report-doughnut-wrap"><canvas id="categoryBooksChart" role="img" aria-label="Biểu đồ số bản sách theo thể loại"></canvas></div>
+            }
+            <div class="table-responsive analytics-table-wrap">
+                <table class="table analytics-table mb-0">
+                    <thead><tr><th>Thể loại</th><th class="text-end">Đầu sách</th><th class="text-end">Bản sách</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in Model.SachTheoTheLoai)
+                    {
+                        <tr><td>@item.TenTheLoai</td><td class="text-end">@item.SoDauSach.ToString("N0")</td><td class="text-end fw-semibold">@item.TongSoBan.ToString("N0")</td></tr>
+                    }
+                    @if (Model.SachTheoTheLoai.Count == 0)
+                    {
+                        <tr><td colspan="3" class="analytics-empty">Chưa có dữ liệu thể loại.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div><span class="analytics-eyebrow">HOẠT ĐỘNG MƯỢN</span><h2>Lượt mượn theo tháng</h2></div>
+                <span class="analytics-period">12 tháng gần nhất</span>
+            </div>
+            @if (Model.LuotMuonTheoThang.Count > 0)
+            {
+                <div class="analytics-chart-wrap"><canvas id="monthlyLoansChart" role="img" aria-label="Biểu đồ lượt mượn trong 12 tháng gần nhất"></canvas></div>
+            }
+            <div class="table-responsive analytics-table-wrap">
+                <table class="table analytics-table mb-0">
+                    <thead><tr><th>Tháng</th><th class="text-end">Lượt mượn</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in Model.LuotMuonTheoThang)
+                    {
+                        <tr><td>@item.Thang.ToString("D2")/@item.Nam</td><td class="text-end fw-semibold">@item.SoLuotMuon.ToString("N0")</td></tr>
+                    }
+                    @if (Model.LuotMuonTheoThang.Count == 0)
+                    {
+                        <tr><td colspan="2" class="analytics-empty">Chưa có dữ liệu mượn.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+    <section class="analytics-content-grid report-ranking-grid">
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div><span class="analytics-eyebrow">XẾP HẠNG</span><h2>Sách được mượn nhiều</h2></div>
+                <span class="analytics-period">Top @Model.SachMuonNhieu.Count</span>
+            </div>
+            <div class="table-responsive analytics-table-wrap">
+                <table class="table analytics-table mb-0">
+                    <thead><tr><th>Bìa</th><th>Tên sách</th><th class="text-end">Số bản mượn</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in Model.SachMuonNhieu)
+                    {
+                        <tr>
+                            <td class="book-cover-cell"><partial name="_BookCover" model="item.TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = item.DuongDanAnhBia }' /></td>
+                            <td class="fw-semibold">@item.TenSach</td>
+                            <td class="text-end fw-semibold">@item.SoLuongMuon.ToString("N0")</td>
+                        </tr>
+                    }
+                    @if (Model.SachMuonNhieu.Count == 0)
+                    {
+                        <tr><td colspan="3" class="analytics-empty">Chưa có dữ liệu mượn.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div><span class="analytics-eyebrow">XẾP HẠNG</span><h2>Bạn đọc mượn nhiều</h2></div>
+                <span class="analytics-period">Top @Model.BanDocMuonNhieu.Count</span>
+            </div>
+            <div class="table-responsive analytics-table-wrap">
+                <table class="table analytics-table mb-0">
+                    <thead><tr><th>#</th><th>Bạn đọc</th><th class="text-end">Số phiếu</th></tr></thead>
+                    <tbody>
+                    @for (var index = 0; index < Model.BanDocMuonNhieu.Count; index++)
+                    {
+                        var item = Model.BanDocMuonNhieu[index];
+                        <tr><td><span class="analytics-rank">@(index + 1)</span></td><td class="fw-semibold">@item.HoTen</td><td class="text-end fw-semibold">@item.SoLuotMuon.ToString("N0")</td></tr>
+                    }
+                    @if (Model.BanDocMuonNhieu.Count == 0)
+                    {
+                        <tr><td colspan="3" class="analytics-empty">Chưa có dữ liệu mượn.</td></tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+    <aside class="analytics-note">
+        <strong>Lưu ý về số liệu</strong>
+        <p>Phiếu chờ duyệt và đã hủy không được tính là lượt mượn. Tiền phạt được chốt khi hoàn tất trả sách; khoản đã thu chỉ được tính sau khi nhân viên xác nhận thanh toán.</p>
+    </aside>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script>
+        const categoryLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SachTheoTheLoai.Select(item => item.TenTheLoai)));
+        const categoryValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SachTheoTheLoai.Select(item => item.TongSoBan)));
+        const monthLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LuotMuonTheoThang.Select(item => $"{item.Thang:D2}/{item.Nam}")));
+        const monthValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LuotMuonTheoThang.Select(item => item.SoLuotMuon)));
+        const analyticsColors = ["#276749", "#d39b35", "#6f9d83", "#cb765d", "#7388b5", "#45a5a1", "#a080bd"];
+
+        if (window.Chart) {
+            const categoryCanvas = document.getElementById("categoryBooksChart");
+            if (categoryCanvas) {
+                new Chart(categoryCanvas, {
+                    type: "doughnut",
+                    data: { labels: categoryLabels, datasets: [{ label: "Bản sách", data: categoryValues, backgroundColor: analyticsColors, borderColor: "#fff", borderWidth: 3, hoverOffset: 5 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: "68%", plugins: { legend: { position: "bottom", labels: { usePointStyle: true, padding: 18 } } } }
+                });
+            }
+
+            const monthlyCanvas = document.getElementById("monthlyLoansChart");
+            if (monthlyCanvas) {
+                new Chart(monthlyCanvas, {
+                    type: "line",
+                    data: {
+                        labels: monthLabels,
+                        datasets: [{
+                            label: "Lượt mượn",
+                            data: monthValues,
+                            borderColor: "#276749",
+                            backgroundColor: "rgba(39, 103, 73, .12)",
+                            pointBackgroundColor: "#276749",
+                            pointRadius: 3,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: .35
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "rgba(23, 36, 29, .07)" } },
+                            x: { grid: { display: false } }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="680" viewBox="0 0 480 680" role="img" aria-labelledby="title desc">
+  <title id="title">Bìa sách thư viện</title>
+  <desc id="desc">Hình minh họa bìa sách mặc định cho sách chưa có ảnh riêng.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#254b3b"/><stop offset="1" stop-color="#9aab70"/></linearGradient>
+  </defs>
+  <path fill="#172f26" d="M22 18h458v662H22z"/>
+  <path fill="url(#bg)" d="M8 8h450v664H8z"/>
+  <circle cx="238" cy="245" r="130" fill="none" stroke="#e0e9bd" stroke-opacity=".25" stroke-width="2"/>
+  <path d="M138 179c39-15 72-9 100 11v144c-28-20-61-26-100-11V179Zm200 0c-39-15-72-9-100 11v144c28-20 61-26 100-11V179Z" fill="#f0edcf" fill-opacity=".92"/>
+  <path d="M238 190v144" stroke="#6b885b" stroke-width="5"/>
+  <text x="52" y="87" fill="#e0e9bd" font-family="Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="3">UNETI • THƯ VIỆN SỐ</text>
+  <path d="M52 423h330" stroke="#e0e9bd" stroke-opacity=".5"/>
+  <text x="52" y="490" fill="#fffdf0" font-family="Arial,sans-serif" font-size="33" font-weight="700">KHO TRI THỨC</text>
+  <text x="52" y="540" fill="#e0e9bd" font-family="Arial,sans-serif" font-size="22">Mỗi trang sách, một thế giới mới</text>
+  <text x="52" y="615" fill="#e0e9bd" font-family="Arial,sans-serif" font-size="15" letter-spacing="3">BỘ SƯU TẬP THƯ VIỆN</text>
+</svg>
