@@ -1,0 +1,43 @@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Models.TheLoai
+@{
+    ViewData["Title"] = "Sửa thể loại";
+}
+
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Cập nhật thể loại</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="MaTheLoai" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenTheLoai" class="form-label"></label>
+            <input asp-for="TenTheLoai" class="form-control" />
+            <span asp-validation-for="TenTheLoai" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MoTa" class="form-label"></label>
+            <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="ThuTuHienThi" class="form-label"></label>
+                    <input asp-for="ThuTuHienThi" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="ThuTuHienThi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3 form-check mt-4">
+                    <input asp-for="TrangThai" class="form-check-input" />
+                    <label asp-for="TrangThai" class="form-check-label">Hoạt động</label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

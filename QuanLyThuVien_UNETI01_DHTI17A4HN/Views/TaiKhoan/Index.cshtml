@@ -7,6 +7,13 @@
 <div class="container mt-4">
     <h2>Quản Lý Tài Khoản Hệ Thống</h2>
     <div class="text-muted mb-3 small">Thực hiện bởi: Nguyễn Thế Đông - 23103100187</div>
+    @if (TempData["ThanhCong"] is string success)
+    {
+        <div class="alert alert-success">@success</div>
+    }
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary">Tạo tài khoản</a>
+    </div>
 
     <table class="table table-bordered table-striped shadow-sm">
         <thead class="table-dark">
@@ -28,7 +35,7 @@
                     <td>@item.HoTen</td>
                     <td>@item.Email</td>
                     <td>
-                        <span class="badge bg-info text-dark">@item.VaiTro</span>
+                        <span class="badge bg-info text-dark">@Html.DisplayFor(_ => item.VaiTro)</span>
                     </td>
                     <td>
                         @if(item.TrangThai) {
@@ -38,6 +45,7 @@
                         }
                     </td>
                     <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.MaTaiKhoan" class="btn btn-info btn-sm">Chi tiết</a>
                         <a asp-action="Edit" asp-route-id="@item.MaTaiKhoan" class="btn btn-warning btn-sm">Sửa / Phân quyền</a>
                     </td>
                 </tr>

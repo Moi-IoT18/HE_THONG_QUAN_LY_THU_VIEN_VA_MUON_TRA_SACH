@@ -1,0 +1,63 @@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div class="auth-page">
+    <div class="auth-card">
+        <aside class="auth-aside">
+            <div>
+                <span class="section-kicker">GÓC ĐỌC CỦA BẠN</span>
+                <h2>Tri thức<br />đang chờ bạn.</h2>
+                <p>Đăng nhập để khám phá sách, quản lý phiếu mượn và tiếp tục hành trình đọc của mình.</p>
+            </div>
+            <span class="auth-aside-note">THƯ VIỆN SỐ · UNETI</span>
+        </aside>
+        <div class="auth-form-panel">
+            <h1>Chào mừng trở lại</h1>
+            <p class="auth-intro">Đăng nhập để tiếp tục khám phá thư viện.</p>
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="TenDangNhap" class="form-label"></label>
+                    <input asp-for="TenDangNhap" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MatKhau" class="form-label"></label>
+                    <div class="input-group">
+                        <input asp-for="MatKhau" id="login-password" class="form-control" type="password" autocomplete="current-password" />
+                        <button class="btn btn-outline-secondary" type="button" id="toggle-login-password"
+                                aria-controls="login-password" aria-pressed="false">Hiện</button>
+                    </div>
+                    <span asp-validation-for="MatKhau" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+            </form>
+            <p class="text-center mt-3 mb-0">
+                Chưa có tài khoản?
+                <a asp-action="Register">Đăng ký bạn đọc</a>
+            </p>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            (() => {
+                const password = document.getElementById("login-password");
+                const toggle = document.getElementById("toggle-login-password");
+                if (!password || !toggle) return;
+
+                toggle.addEventListener("click", () => {
+                    const showPassword = password.type === "password";
+                    password.type = showPassword ? "text" : "password";
+                    toggle.textContent = showPassword ? "Ẩn" : "Hiện";
+                    toggle.setAttribute("aria-pressed", showPassword.toString());
+                });
+            })();
+        </script>
+    }
+</div>

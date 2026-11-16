@@ -24,7 +24,7 @@
             <dd class="col-sm-9">@(Model.TrangThai ? "Hoạt động" : "Khóa")</dd>
         </dl>
 
-        <form asp-action="Delete">
+        <form asp-action="Delete" method="post">
             <input type="hidden" asp-for="MaTheLoai" />
             <button type="submit" class="btn btn-danger px-4">Xác nhận Xóa</button>
             <a asp-action="Index" class="btn btn-secondary px-4">Hủy bỏ</a>
