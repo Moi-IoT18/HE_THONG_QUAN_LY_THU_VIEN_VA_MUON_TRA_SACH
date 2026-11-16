@@ -1,0 +1,32 @@
+@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Xem chi tiết kết quả của một dòng mượn và giao dịch chính. *@
+@model QuanLyThuVien_UNETI01_DHTI17A4HN.Models.ChiTietMuon
+@{
+    ViewData["Title"] = "Chi tiết mượn";
+    var laPhieuDangMuon = Model.PhieuMuon?.TrangThai is TrangThaiPhieu.DangMuon or TrangThaiPhieu.QuaHan;
+    var soNgayQuaHan = laPhieuDangMuon
+        ? QuaHanService.TinhSoNgayQuaHan(Model.PhieuMuon!.HanTra) : Model.SoNgayQuaHan;
+    var tienPhat = laPhieuDangMuon
+        ? QuaHanService.TinhTienPhatTamTinh(Model.PhieuMuon!.HanTra, Model.SoLuong) : Model.TienPhat;
+}
+
+<h2 class="page-title">Chi tiết mượn #@Model.MaChiTiet</h2>
+<div class="card"><div class="card-body">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Phiếu mượn</dt><dd class="col-sm-9"><a asp-controller="XuLyPhieu" asp-action="Details" asp-route-id="@Model.MaPhieuMuon">#@Model.MaPhieuMuon</a></dd>
+        <dt class="col-sm-3">Bạn đọc</dt><dd class="col-sm-9">@Model.PhieuMuon?.BanDoc?.HoTen</dd>
+        <dt class="col-sm-3">Sách</dt><dd class="col-sm-9 d-flex align-items-center gap-3"><partial name="_BookCover" model="Model.Sach?.TenSach ?? string.Empty" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = Model.Sach?.DuongDanAnhBia }' />@Model.Sach?.TenSach</dd>
+        <dt class="col-sm-3">Số lượng</dt><dd class="col-sm-9">@Model.SoLuong</dd>
+        <dt class="col-sm-3">Trạng thái mượn</dt><dd class="col-sm-9">@Model.TinhTrangMuon.TenHienThi()</dd>
+        <dt class="col-sm-3">Trạng thái phiếu</dt><dd class="col-sm-9">@Model.PhieuMuon?.TrangThai.TenHienThi()</dd>
+        <dt class="col-sm-3">Tình trạng trả</dt><dd class="col-sm-9">@(Model.TinhTrangTra?.TenHienThi() ?? "Chưa ghi nhận")</dd>
+        <dt class="col-sm-3">Số ngày quá hạn</dt><dd class="col-sm-9">@soNgayQuaHan</dd>
+        <dt class="col-sm-3">@(laPhieuDangMuon ? "Phạt tạm tính" : "Tiền phạt")</dt><dd class="col-sm-9">@UiHelper.Tien(tienPhat)</dd>
+        <dt class="col-sm-3">Ghi chú</dt><dd class="col-sm-9">@(Model.GhiChu ?? "—")</dd>
+        <dt class="col-sm-3">Ngày mượn</dt><dd class="col-sm-9">@UiHelper.NgayGio(Model.PhieuMuon?.NgayMuon)</dd>
+        <dt class="col-sm-3">Hạn trả</dt><dd class="col-sm-9">@UiHelper.Ngay(Model.PhieuMuon?.HanTra)</dd>
+        <dt class="col-sm-3">Ngày trả</dt><dd class="col-sm-9">@UiHelper.NgayGio(Model.PhieuMuon?.NgayTra)</dd>
+    </dl>
+</div></div>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Quay lại danh sách</a>

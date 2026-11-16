@@ -1,0 +1,49 @@
+@* Họ và tên: Phan Vũ Thanh Thư
+   Mã sinh viên: 23103100316
+   Nội dung thực hiện: Danh sách các phiếu quá hạn, cập nhật trạng thái từ dữ liệu SQL Server. *@
+@model IReadOnlyList<QuanLyThuVien_UNETI01_DHTI17A4HN.Models.PhieuMuon>
+@{
+    ViewData["Title"] = "Phiếu quá hạn";
+}
+
+<h2 class="page-title">Theo dõi phiếu quá hạn</h2>
+<div class="card"><div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead><tr><th>Phiếu</th><th>Bạn đọc</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Quá hạn</th><th>Phạt tạm tính</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var phieu in Model)
+        {
+            var ngayQuaHan = QuaHanService.TinhSoNgayQuaHan(phieu.HanTra);
+            var tienPhatTamTinh = phieu.ChiTietMuons.Sum(ct =>
+                QuaHanService.TinhTienPhatTamTinh(phieu.HanTra, ct.SoLuong));
+            <tr>
+                <td>#@phieu.MaPhieuMuon</td>
+                <td>@phieu.BanDoc?.HoTen</td>
+                <td>
+                    <div class="book-cover-list">
+                    @foreach (var ct in phieu.ChiTietMuons)
+                    {
+                        <span class="book-cover-item">
+                            <partial name="_BookCover" model="ct.Sach?.TenSach ?? string.Empty" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = ct.Sach?.DuongDanAnhBia }' />
+                            <span>@ct.Sach?.TenSach</span>
+                        </span>
+                    }
+                    </div>
+                </td>
+                <td>@UiHelper.NgayGio(phieu.NgayMuon)</td>
+                <td>@UiHelper.Ngay(phieu.HanTra)</td>
+                <td>@ngayQuaHan ngày</td>
+                <td class="text-danger fw-semibold">@UiHelper.Tien(tienPhatTamTinh)</td>
+                <td class="text-nowrap">
+                    <a asp-controller="XuLyPhieu" asp-action="Details" asp-route-id="@phieu.MaPhieuMuon" class="btn btn-sm btn-outline-secondary">Chi tiết</a>
+                    <a asp-controller="XuLyPhieu" asp-action="TraSach" asp-route-id="@phieu.MaPhieuMuon" class="btn btn-sm btn-primary">Nhận trả</a>
+                </td>
+            </tr>
+        }
+        @if (Model.Count == 0)
+        {
+            <tr><td colspan="8" class="text-center text-muted py-4">Hiện không có phiếu quá hạn.</td></tr>
+        }
+        </tbody>
+    </table>
+</div></div>
