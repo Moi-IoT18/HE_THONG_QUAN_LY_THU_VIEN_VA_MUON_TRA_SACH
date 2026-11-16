@@ -29,16 +29,6 @@ Chỉ sử dụng mật khẩu tạm thời trên môi trường phát triển r
 
 Danh sách sách thực hiện tìm kiếm tên sách/thể loại/NXB, lọc kết hợp theo thể loại/năm/trạng thái/tình trạng tồn kho/khoảng giá, sắp xếp và phân trang trực tiếp trên `IQueryable` EF Core. Thanh phân trang dùng lại toàn bộ query string hiện tại, chỉ thay số trang; dữ liệu không được tải toàn bộ về trình duyệt để phân trang.
 
-## Chạy kiểm thử tự động
-
-Project kiểm thử `QuanLyThuVien.Tests` bao gồm đăng nhập (đúng/sai/không tồn tại/bị khóa), quyền Session tại Controller, luồng trạng thái, Data Annotation, kiểm tra upload ảnh, email chưa cấu hình, cấu trúc file Excel/PDF và SQL được EF Core sinh ra cho tìm kiếm/lọc kết hợp/phân trang sách. Truy vấn SQL được kiểm tra mà không mở kết nối hay ghi dữ liệu vào database:
-
-```powershell
-dotnet test .\QuanLyThuVien.Tests\QuanLyThuVien.Tests.csproj
-```
-
-Kiểm thử giao dịch end-to-end trên SQL Server cần database riêng và các tài khoản/dữ liệu demo; không chạy trên database người dùng có dữ liệu. Bộ kiểm thử tự động không tự seed dữ liệu.
-
 ## Giao diện, ảnh bìa, email và báo cáo
 
 Sau khi cập nhật mã, chạy migration để thêm đường dẫn ảnh bìa vào bảng `Sach`:

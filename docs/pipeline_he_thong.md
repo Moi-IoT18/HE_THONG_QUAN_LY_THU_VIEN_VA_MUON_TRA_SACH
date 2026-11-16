@@ -16,7 +16,6 @@ flowchart TD
         GitPush["Git Push / Pull Request"] --> GH_Actions["GitHub Actions (build.yml)"]
         GH_Actions --> DotnetRestore["dotnet restore"]
         DotnetRestore --> DotnetBuild["dotnet build"]
-        DotnetBuild --> DotnetTest["dotnet test (QuanLyThuVien.Tests)"]
     end
 
     subgraph WebPipeline["Pipeline Xử lý Request (Middleware & Filters)"]
@@ -70,15 +69,8 @@ flowchart LR
 ### Các bước thực thi:
 1. **Trigger**: Kích hoạt tự động khi có commit hoặc Pull Request vào nhánh `main` hoặc `develop`.
 2. **Environment Setup**: Thiết lập môi trường Linux runner với .NET 10.
-3. **Dependency Restoration**: Phục hồi các package NuGet (`Microsoft.EntityFrameworkCore`, `ClosedXML`, `xUnit`...).
-4. **Build Verification**: Biên dịch toàn bộ solution ở chế độ `Release` không có lỗi cú pháp hay thiếu kiểu.
-5. **Automated Testing**: Chạy 35+ ca kiểm thử tự động trong `QuanLyThuVien.Tests` để xác minh:
-   - Cơ chế băm và xác thực mật khẩu PBKDF2 (`AuthServiceTests`).
-   - Quyền hạn truy cập và điều hướng vai trò (`AuthorizationTests`).
-   - Quy tắc chuyển đổi trạng thái giao dịch (`WorkflowAndValidationTests`).
-   - Truy vấn SQL được EF Core sinh ra cho tìm kiếm/lọc (`BookQueryTests`).
-   - Kiểm tra an toàn upload ảnh bìa (`BookImageStorageTests`).
-   - Xuất file báo cáo Excel/PDF (`ReportExportTests`).
+3. **Dependency Restoration**: Phục hồi các package NuGet (`Microsoft.EntityFrameworkCore`, `ClosedXML`...).
+4. **Build Verification**: Biên dịch toàn bộ dự án (`dotnet build`) đảm bảo không có lỗi cú pháp hay thiếu thư viện.
 
 ---
 
