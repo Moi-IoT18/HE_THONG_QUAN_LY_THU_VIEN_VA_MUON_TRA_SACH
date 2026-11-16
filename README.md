@@ -4,25 +4,17 @@
 
 Hệ thống quản lý toàn bộ quy trình của thư viện: dữ liệu nền (thể loại, nhà xuất bản, sách), bạn đọc, đăng ký mượn, duyệt phiếu, trả sách, tính tiền phạt, xử lý quá hạn, Dashboard và thống kê. Kiến trúc 3 lớp **Controller → Service → Repository**.
 
-> **Bấm vào từng mục bên dưới để mở nội dung.** Thành viên mới đọc trước: [docs/LO_TRINH_TRIEN_KHAI.md](./docs/LO_TRINH_TRIEN_KHAI.md).
+> **Bấm vào từng mục bên dưới để mở nội dung.** Thành viên mới đọc trước: [docs/HuongDan_Nhom.md](./docs/HuongDan_Nhom.md) và tài liệu pipeline hệ thống: [docs/pipeline_he_thong.md](./docs/pipeline_he_thong.md).
 
 ## Thành viên & phân công
 
 | Mã | Họ tên | MSSV | Module | Nhánh |
 |---|---|---|---|---|
-<<<<<<< HEAD
 | SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) | 23103100187 | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
-| SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc , sắp xếp , phân trang | `feature/m2-sach` |
+| SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc / sắp xếp / phân trang | `feature/m2-sach` |
 | SV3 | Đặng Thị Phượng | 23103100182 | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
 | SV4 | Trịnh Thị Thanh Tâm | 23103100193 | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
 | SV5 | Phan Vũ Thanh Thư | 23103100316 | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
-=======
-| SV1 | Nguyễn Thế Đông (**Nhóm trưởng**) |23103100187  | M1 – Tài khoản, đăng nhập, phân quyền, thể loại | `feature/m1-taikhoan` |
-| SV2 | Trần Gia Nghĩa  | 23103100228 | M2 – Sách, nhà xuất bản, tìm kiếm / lọc / sắp xếp / phân trang | `feature/m2-sach` |
-| SV3 | Đặng Thị Phượng | 23103100182 | M3 – Bạn đọc, hồ sơ cá nhân, đăng ký mượn, theo dõi phiếu | `feature/m3-bandoc` |
-| SV4 | Trịnh Thị Thanh Tâm |23103100193  | M4 – Duyệt phiếu, trả sách, tính phạt, luồng trạng thái | `feature/m4-xulyphieu` |
-| SV5 | Phan Vũ Thanh Thư |23103100316  | M5 – Chi tiết mượn, quá hạn, Dashboard, thống kê | `feature/m5-thongke` |
->>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
 
 ## Nội dung chi tiết
 
@@ -127,12 +119,7 @@ Một chức năng đủ bộ = 5 file `.cs` + các View, ví dụ Nhà xuất b
 <details>
 <summary><b>3. Sơ đồ ERD</b></summary>
 
-<<<<<<< HEAD
- Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io) 
-=======
-GitHub tự vẽ sơ đồ bên dưới. Ảnh tĩnh: [docs/images/erd.png](./docs/images/erd.png) · dán [docs/schema.dbml](./docs/schema.dbml) vào [dbdiagram.io](https://dbdiagram.io) để xem bản đẹp.
-
->>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
+GitHub tự vẽ sơ đồ bên dưới theo Mermaid. Chi tiết thiết kế và pipeline hệ thống xem tại [docs/pipeline_he_thong.md](./docs/pipeline_he_thong.md) và hướng dẫn nhóm tại [docs/HuongDan_Nhom.md](./docs/HuongDan_Nhom.md).
 ```mermaid
 erDiagram
     TheLoai     ||--o{ Sach        : "phân loại"
@@ -754,17 +741,7 @@ Mẫu bắt buộc: **`[MSSV] [Module] Noi dung`** – tiếng Việt **không d
 
 | Tài liệu | Nội dung |
 |---|---|
-| [docs/LO_TRINH_TRIEN_KHAI.md](./docs/LO_TRINH_TRIEN_KHAI.md) | Lộ trình GitHub từng bước, lịch theo tuần |
-| [docs/PHAN_TICH_DU_AN_MAU.md](./docs/PHAN_TICH_DU_AN_MAU.md) | Phân tích dự án mẫu, kiến trúc 3 lớp |
-| [docs/USECASE.md](./docs/USECASE.md) | Use Case tổng quát + 5 module |
-| [docs/ERD.md](./docs/ERD.md) | ERD 7 bảng + sơ đồ trạng thái phiếu mượn |
-| [docs/THIETKE_CSDL.md](./docs/THIETKE_CSDL.md) | Chi tiết bảng, ràng buộc, quy định nghiệp vụ |
-<<<<<<< HEAD
-| [docs/QuanLyThuVien_UNETI01_full.sql](./docs/QuanLyThuVien_UNETI01_full.sql) | Database hoàn chỉnh + dữ liệu mẫu |
-=======
-| [docs/QuanLyThuVien_UNETI01_full.sql](./docs/QuanLyThuVien_UNETI01.sql) | Database hoàn chỉnh + dữ liệu mẫu |
->>>>>>> 54653bcdb381d61b0486797285e5da7878ccd35d
-| [docs/database.sql](./docs/database.sql) · [docs/schema.dbml](./docs/schema.dbml) | Script tham chiếu · ERD cho dbdiagram.io |
-| [docs/GIAODIEN.md](./docs/GIAODIEN.md) | Ảnh chụp giao diện |
+| [docs/pipeline_he_thong.md](./docs/pipeline_he_thong.md) | Mô tả toàn diện pipeline CI/CD, Middleware, Mượn trả và Dữ liệu |
+| [docs/HuongDan_Nhom.md](./docs/HuongDan_Nhom.md) | Hướng dẫn seed dữ liệu mẫu, cấu hình SMTP, checklist kiểm thử |
 
 </details>
