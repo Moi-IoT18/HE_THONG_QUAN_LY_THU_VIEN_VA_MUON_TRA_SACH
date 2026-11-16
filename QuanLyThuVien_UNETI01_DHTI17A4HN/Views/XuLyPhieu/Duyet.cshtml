@@ -1,0 +1,12 @@
+@* Họ và tên: Trịnh Thị Thanh Tâm
+   Mã sinh viên: 23103100193
+   Nội dung thực hiện: Xác nhận duyệt phiếu; tồn kho chỉ giảm khi transaction thành công. *@
+@model PhieuMuon
+@{ ViewData["Title"] = $"Duyệt phiếu #{Model.MaPhieuMuon}"; }
+<h3 class="page-title">Xác nhận duyệt phiếu #@Model.MaPhieuMuon</h3>
+<partial name="_ThongTinPhieu" model="Model" />
+<div class="alert alert-info">Khi duyệt thành công, hệ thống kiểm tra lại thẻ bạn đọc, điều kiện mượn và tồn kho; số lượng sách còn sẽ được giảm cùng transaction.</div>
+<form asp-action="DuyetXacNhan" asp-route-id="@Model.MaPhieuMuon" method="post" class="d-flex gap-2">
+    <button class="btn btn-success">Xác nhận duyệt</button>
+    <a asp-action="Details" asp-route-id="@Model.MaPhieuMuon" class="btn btn-outline-secondary">Hủy</a>
+</form>

@@ -1,0 +1,60 @@
+@* Họ và tên: Trịnh Thị Thanh Tâm
+   Mã sinh viên: 23103100193
+   Nội dung thực hiện: Ghi nhận tình trạng trả, cập nhật tồn kho và tiền phạt trong transaction.
+   Bổ sung Module 5: Phan Vũ Thanh Thư - 23103100316: nhập ghi chú kết quả theo từng dòng sách. *@
+@model TraSachViewModel
+@{ ViewData["Title"] = $"Nhận trả phiếu #{Model.MaPhieuMuon}"; }
+<h3 class="page-title">Nhận trả phiếu #@Model.MaPhieuMuon</h3>
+<p>Bạn đọc: <strong>@Model.HoTenBanDoc</strong> · Hạn trả: <strong>@UiHelper.Ngay(Model.HanTra)</strong></p>
+<div class="card fine-summary-card mb-3">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div>
+            <div class="fine-summary-label">@(Model.SoNgayQuaHan > 0 ? $"Quá hạn {Model.SoNgayQuaHan} ngày" : "Trả trong hạn")</div>
+            <div class="fine-summary-note">Mức phạt: @UiHelper.Tien(QuyDinh.PhatQuaHanMoiNgay)/ngày/cuốn × tổng số lượng sách</div>
+        </div>
+        <div class="text-end">
+            <div class="fine-summary-label">Tiền phạt dự kiến</div>
+            <strong class="fine-summary-amount">@UiHelper.Tien(Model.TienPhatTamTinh)</strong>
+        </div>
+    </div>
+</div>
+<div asp-validation-summary="All" class="alert alert-danger"></div>
+<form asp-action="TraSach" asp-route-id="@Model.MaPhieuMuon" method="post">
+    <input asp-for="MaPhieuMuon" type="hidden" />
+    <input asp-for="HoTenBanDoc" type="hidden" />
+    <input asp-for="HanTra" type="hidden" />
+    <table class="table table-bordered align-middle">
+        <thead><tr><th>Sách</th><th class="text-center">Số lượng</th><th>Tình trạng khi trả</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+        @for (var i = 0; i < Model.ChiTiet.Count; i++)
+        {
+            <tr>
+                <td>
+                    <partial name="_BookCover" model="Model.ChiTiet[i].TenSach" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail return-book-cover", ["CoverUrl"] = Model.ChiTiet[i].DuongDanAnhBia }' />
+                    @Model.ChiTiet[i].TenSach
+                    <input asp-for="ChiTiet[i].MaChiTiet" type="hidden" />
+                    <input asp-for="ChiTiet[i].TenSach" type="hidden" />
+                    <input asp-for="ChiTiet[i].SoLuong" type="hidden" />
+                </td>
+                <td class="text-center">@Model.ChiTiet[i].SoLuong</td>
+                <td>
+                    <select asp-for="ChiTiet[i].TinhTrangTra" class="form-select">
+                        <option value="">-- Chọn tình trạng --</option>
+                        <option value="@TinhTrangTra.BinhThuong">Bình thường</option>
+                        <option value="@TinhTrangTra.Hong">Hỏng (loại khỏi tồn kho)</option>
+                        <option value="@TinhTrangTra.Mat">Mất (loại khỏi tồn kho)</option>
+                    </select>
+                    <span asp-validation-for="ChiTiet[i].TinhTrangTra" class="text-danger"></span>
+                </td>
+                <td>
+                    <input asp-for="ChiTiet[i].GhiChu" class="form-control" maxlength="500" />
+                    <span asp-validation-for="ChiTiet[i].GhiChu" class="text-danger"></span>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="alert alert-info">Sách bình thường được cộng lại vào số lượng còn. Sách hỏng/mất bị loại khỏi tổng tồn kho. Tiền phạt chính thức được xác nhận khi hoàn tất nhận trả. Nếu phát sinh phạt, bạn đọc nộp tiền mặt tại quầy thư viện hoặc chuyển khoản theo thông tin chính thức do thủ thư cung cấp; nhân viên xác nhận đã thu đủ sau khi nhận tiền hoặc đối soát giao dịch.</div>
+    <button class="btn btn-primary">Xác nhận nhận trả</button>
+    <a asp-action="Details" asp-route-id="@Model.MaPhieuMuon" class="btn btn-outline-secondary">Hủy</a>
+</form>

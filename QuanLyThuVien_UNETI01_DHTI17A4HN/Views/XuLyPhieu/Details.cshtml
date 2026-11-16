@@ -1,0 +1,29 @@
+@* Họ và tên: Trịnh Thị Thanh Tâm
+   Mã sinh viên: 23103100193
+   Nội dung thực hiện: Chi tiết phiếu phục vụ nhân viên xử lý. *@
+@model PhieuMuon
+@{ ViewData["Title"] = $"Xử lý phiếu #{Model.MaPhieuMuon}"; }
+<partial name="_ThongTinPhieu" model="Model" />
+<div class="d-flex flex-wrap gap-2">
+    @if (Model.TrangThai == TrangThaiPhieu.ChoDuyet)
+    {
+        <a asp-action="Duyet" asp-route-id="@Model.MaPhieuMuon" class="btn btn-success">Duyệt phiếu</a>
+        <a asp-action="TuChoi" asp-route-id="@Model.MaPhieuMuon" class="btn btn-outline-danger">Từ chối phiếu</a>
+    }
+    else if (Model.TrangThai is TrangThaiPhieu.DangMuon or TrangThaiPhieu.QuaHan)
+    {
+        <a asp-action="TraSach" asp-route-id="@Model.MaPhieuMuon" class="btn btn-primary">Nhận trả sách</a>
+    }
+    @if (Model.TrangThai == TrangThaiPhieu.DaTra && Model.TienPhat > 0 && !Model.DaNopTienPhat)
+    {
+        <form asp-action="XacNhanNopTienPhat" asp-route-id="@Model.MaPhieuMuon" method="post" class="d-flex flex-wrap align-items-center gap-2">
+            <label for="hinhThucNopPhat" class="form-label mb-0">Xác nhận đã thu đủ @UiHelper.Tien(Model.TienPhat):</label>
+            <select id="hinhThucNopPhat" name="hinhThuc" class="form-select" required>
+                <option value="@HinhThucNopPhat.TienMat">Tiền mặt tại quầy</option>
+                <option value="@HinhThucNopPhat.ChuyenKhoan">Chuyển khoản (đã đối soát)</option>
+            </select>
+            <button type="submit" class="btn btn-success">Xác nhận đã nộp</button>
+        </form>
+    }
+    <a asp-action="Index" class="btn btn-outline-secondary">Quay lại danh sách</a>
+</div>

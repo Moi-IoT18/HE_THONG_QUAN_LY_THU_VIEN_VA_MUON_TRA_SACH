@@ -1,0 +1,95 @@
+@* Họ và tên: Trịnh Thị Thanh Tâm
+   Mã sinh viên: 23103100193
+   Nội dung thực hiện: Tìm kiếm, lọc, sắp xếp và phân trang phiếu cần xử lý. *@
+@model XuLyPhieuFilterViewModel
+@{ ViewData["Title"] = "Xử lý phiếu mượn"; }
+<div class="container">
+<h3 class="page-title">Tiếp nhận và xử lý phiếu mượn</h3>
+<form method="get" class="filter-bar row g-2 align-items-end">
+    <div class="col-md-3">
+        <label class="form-label small">Bạn đọc / sách</label>
+        <input asp-for="TuKhoa" class="form-control" placeholder="Tên, tài khoản hoặc tên sách" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small">Thể loại</label>
+        <select asp-for="MaTheLoai" asp-items="ViewBag.TheLoais" class="form-select"><option value="">-- Tất cả --</option></select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small">Nhà xuất bản</label>
+        <select asp-for="MaNhaXuatBan" asp-items="ViewBag.NhaXuatBans" class="form-select"><option value="">-- Tất cả --</option></select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small">Trạng thái</label>
+        <select asp-for="TrangThai" asp-items="UiHelper.DanhSachEnum(Model.TrangThai)" class="form-select"><option value="">-- Tất cả --</option></select>
+    </div>
+    <div class="col-md-2">
+        <label asp-for="TuNgay" class="form-label small">Từ ngày tạo</label>
+        <input asp-for="TuNgay" type="date" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="DenNgay" class="form-label small">Đến ngày tạo</label>
+        <input asp-for="DenNgay" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small">Sắp xếp</label>
+        <select asp-for="SapXep" class="form-select">
+            <option value="ngay_desc">Ngày mới nhất</option>
+            <option value="ngay_asc">Ngày cũ nhất</option>
+            <option value="ten_asc">Bạn đọc A → Z</option>
+            <option value="ten_desc">Bạn đọc Z → A</option>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+        <button class="btn btn-thuvien">Tìm kiếm / lọc</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Xóa lọc</a>
+    </div>
+</form>
+<div asp-validation-summary="All" class="text-danger mb-2"></div>
+<div class="card"><div class="card-body p-0">
+<div class="table-responsive">
+<table class="table table-hover mb-0 align-middle">
+    <thead><tr><th>Mã phiếu</th><th>Bạn đọc</th><th>Sách</th><th>Ngày tạo</th><th>Hạn trả</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+    @foreach (var p in Model.DanhSach.Items)
+    {
+        <tr>
+            <td>#@p.MaPhieuMuon</td>
+            <td>@p.BanDoc?.HoTen<div class="small text-muted">@p.BanDoc?.TaiKhoan?.TenDangNhap</div></td>
+            <td class="small">
+                <div class="book-cover-list">
+                @foreach (var ct in p.ChiTietMuons)
+                {
+                    <span class="book-cover-item">
+                        <partial name="_BookCover" model="ct.Sach?.TenSach ?? string.Empty" view-data='new ViewDataDictionary(ViewData) { ["CoverClass"] = "book-cover-thumbnail", ["CoverUrl"] = ct.Sach?.DuongDanAnhBia }' />
+                        <span>@ct.Sach?.TenSach</span>
+                    </span>
+                }
+                </div>
+            </td>
+            <td>@UiHelper.NgayGio(p.NgayMuon)</td>
+            <td>@UiHelper.Ngay(p.HanTra)</td>
+            <td><span class="badge @UiHelper.MauTrangThai(p.TrangThai)">@p.TrangThai.TenHienThi()</span></td>
+            <td class="text-end text-nowrap">
+                <a asp-action="Details" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-outline-secondary">Chi tiết</a>
+                @if (p.TrangThai == TrangThaiPhieu.ChoDuyet)
+                {
+                    <a asp-action="Duyet" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-success">Duyệt</a>
+                    <a asp-action="TuChoi" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-outline-danger">Từ chối</a>
+                }
+                else if (p.TrangThai is TrangThaiPhieu.DangMuon or TrangThaiPhieu.QuaHan)
+                {
+                    <a asp-action="TraSach" asp-route-id="@p.MaPhieuMuon" class="btn btn-sm btn-primary">Nhận trả</a>
+                }
+            </td>
+        </tr>
+    }
+    @if (!Model.DanhSach.Items.Any())
+    {
+        <tr><td colspan="7" class="text-center text-muted py-4">Không có phiếu phù hợp.</td></tr>
+    }
+    </tbody>
+</table>
+</div>
+</div></div>
+<partial name="_PhanTrang" model="Model.DanhSach" />
+</div>
